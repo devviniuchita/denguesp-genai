@@ -441,7 +441,6 @@ tests/.auth/user.json
 .copilot/
 .cursorignore
 .cursorrules
-.github/
 copilot-rules/
 copilot-instructions.md
 .claude/
