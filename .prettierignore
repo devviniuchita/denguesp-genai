@@ -1,0 +1,61 @@
+################################################################################
+# Prettier ignore list (Next.js 16)
+# Mantém o formatador longe de saídas de build, caches e metadados do projeto.
+################################################################################
+
+# Dependências
+node_modules/
+package-lock.json
+yarn.lock
+
+# Build / Deploy artifacts
+.next/
+.vercel/
+.turbo/
+.swc/
+dist/
+dist-ssr/
+out/
+build/
+.out/
+.storybook-out/
+coverage/
+*.lcov
+.nyc_output
+
+# Logs e relatórios
+logs/
+*.log
+*.tsbuildinfo
+
+# Ambiente
+.env*
+*.local
+
+# IDE / Ferramentas
+.vscode/
+.idea/
+.cursor/
+.todo2/
+.cursorignore
+.cursorrules
+CLAUDE.md
+GEMINI.md
+
+# Sistemas Operacionais
+.DS_Store
+Thumbs.db
+
+# Arquivos gerados ou minificados
+*.min.js
+*.min.css
+
+# Temporários e caches diversos
+tmp/
+temp/
+.cache/
+.parcel-cache/
+.rpt2_cache/
+.rts2_cache_cjs/
+.rts2_cache_es/
+.rts2_cache_umd/

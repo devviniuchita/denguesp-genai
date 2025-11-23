@@ -1,0 +1,17 @@
+/* Syntax highlighting styles */
+@import "highlight.js/styles/atom-one-dark.css";
+
+/* Override highlight.js styles to match app theme */
+.hljs {
+  background: transparent !important;
+  padding: 0 !important;
+}
+
+/* Light mode adjustments */
+@media (prefers-color-scheme: light) {
+  .markdown-content .hljs {
+    filter: brightness(1.1) saturate(0.9);
+  }
+}
+
+/* Dark mode adjustments - already good with atom-one-dark */

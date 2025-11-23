@@ -1,0 +1,98 @@
+################################################################################
+# Next.js 16 + Vercel Ignore List
+# Mantém o bundle leve durante o upload do código para a Vercel.
+################################################################################
+
+# Dependências e gerenciadores
+node_modules/
+.pnp/
+.pnp.js
+yarn.lock
+pnpm-lock.yaml
+bun.lockb
+
+# Artefatos de build e caches locais
+.next/
+.turbo/
+.swc/
+dist/
+build/
+.output/
+.cache/
+*.tsbuildinfo
+*.map
+
+# Ferramentas/IDEs
+.vscode/
+.idea/
+.vs/
+.cursor/
+.cursorignore
+.cursorrules
+.todo2/
+
+# Logs e temporários
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+tmp/
+temp/
+*.tmp
+
+# Ambiente (Vercel usa Project Settings)
+.env*
+*.local
+
+# Documentação pesada (opcional para deploy)
+docs/
+**/*.md
+PLANODEACAO.md
+PRD.md
+PROJECT_STRUTURE.md
+README.md
+
+# Testes e coverage
+**/tests/
+coverage/
+.nyc_output/
+playwright-report/
+cypress/
+test-results/
+
+# Storybook / builds auxiliares
+.storybook-out/
+storybook-static/
+
+# Arquivos de SO e backups
+.DS_Store
+Thumbs.db
+desktop.ini
+*.lnk
+*.zip
+*.tar.gz
+*.rar
+*.7z
+*.bak
+*.backup
+*.orig
+
+# Manter sempre estes arquivos/diretórios (necessários para o build Next.js)
+!package.json
+!package-lock.json
+!tsconfig.json
+!next.config.js
+!postcss.config.js
+!tailwind.config.ts
+!vercel.json
+!app/
+!components/
+!contexts/
+!hooks/
+!lib/
+!types/
+!public/
+!styles/
+!docs/README-deploy.md

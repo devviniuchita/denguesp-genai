@@ -1,0 +1,41 @@
+# EditorConfig is awesome: https://EditorConfig.org
+# Mantém o estilo consistente entre editores (Next.js 16 + TypeScript)
+
+root = true
+
+[*]
+indent_style = space
+indent_size = 2
+tab_width = 2
+end_of_line = lf
+charset = utf-8
+trim_trailing_whitespace = true
+insert_final_newline = true
+
+# Linguagens principais do projeto (TS/JS/MDX/Tailwind)
+[*.{js,jsx,ts,tsx,cjs,mjs,cts,mts,mdx,md,json,jsonc,css,scss,sass,yml,yaml}]
+indent_size = 2
+
+# Markdown permite espaços no fim de linha para quebras manuais
+[*.md]
+trim_trailing_whitespace = false
+max_line_length = off
+
+[*.mdx]
+trim_trailing_whitespace = false
+
+# Shell scripts
+[*.{sh,bash}]
+indent_style = space
+indent_size = 2
+
+# PowerShell / Windows scripts
+[*.ps1]
+end_of_line = crlf
+
+[*.{cmd,bat}]
+end_of_line = crlf
+
+# Makefiles continuam com TABs obrigatórios
+[Makefile]
+indent_style = tab

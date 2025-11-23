@@ -1,0 +1,68 @@
+################################################################################
+# Git attributes — Next.js 16 + TypeScript
+# Assegura finais de linha consistentes, marca binários e otimiza diffs.
+################################################################################
+
+* text=auto
+
+# Código-fonte principal (LF)
+*.{js,jsx,ts,tsx,cjs,mjs,cts,mts} text eol=lf
+*.{json,jsonc} text eol=lf
+*.{md,mdx} text eol=lf
+*.{yml,yaml} text eol=lf
+*.{css,scss,sass} text eol=lf
+*.{html,xml,svg} text eol=lf
+
+# Arquivos de configuração
+*.config.{js,ts} text eol=lf
+.eslintrc* text eol=lf
+.prettierrc* text eol=lf
+.editorconfig text eol=lf
+.gitignore text eol=lf
+.gitattributes text eol=lf
+package.json text eol=lf
+package-lock.json text eol=lf
+tailwind.config.ts text eol=lf
+next.config.js text eol=lf
+postcss.config.js text eol=lf
+tsconfig.json text eol=lf
+
+# Documentação
+*.md text eol=lf
+*.txt text eol=lf
+
+# Scripts
+*.sh text eol=lf
+.husky/* text eol=lf
+*.ps1 text eol=crlf
+*.{bat,cmd} text eol=crlf
+
+# Testes
+*.{test,spec}.{js,ts,tsx} text eol=lf
+*.cy.{js,ts} text eol=lf
+
+# Binários comuns
+*.{png,jpg,jpeg,gif,ico,webp,avif} binary
+*.{woff,woff2,ttf,otf,eot} binary
+*.pdf binary
+
+# Artefatos e caches (tratados como binário para evitar diffs pesados)
+.next/** binary
+.turbo/** binary
+.swc/** binary
+dist/** binary
+build/** binary
+.vercel/** binary
+*.tsbuildinfo binary
+*.map binary
+
+# Segurança / env
+*.env* binary
+
+# Linguist overrides úteis
+public/** binary
+*.css linguist-vendored=false
+*.scss linguist-vendored=false
+tailwind.config.ts linguist-language=TypeScript
+next.config.js linguist-language=JavaScript
+postcss.config.js linguist-language=JavaScript

@@ -1,0 +1,151 @@
+# File Tree: ai-chat-frontend
+
+**Generated:** 11/22/2025, 5:33:35 PM
+**Root Path:** `c:\Users\ADMIN\Desktop\ai-chat-frontend`
+
+```
+├── 📁 .github
+│   └── 📁 workflows
+│       ├── ⚙️ ci.yml
+│       └── ⚙️ lighthouse.yml
+├── 📁 app
+│   ├── 📁 (home)
+│   │   ├── 📁 components
+│   │   │   ├── 📄 HeroHeadline.tsx
+│   │   │   ├── 📄 HeroNavigation.tsx
+│   │   │   ├── 📄 HeroVisual.tsx
+│   │   │   ├── 📄 HeroVisualDynamic.tsx
+│   │   │   ├── 📄 InitiateChatButton.tsx
+│   │   │   └── 📄 ScriptOptimization.tsx
+│   │   ├── 📄 layout.tsx
+│   │   └── 📄 page.tsx
+│   ├── 📁 api
+│   │   ├── 📁 auth
+│   │   │   └── 📁 [...nextauth]
+│   │   │       └── 📄 route.ts
+│   │   ├── 📁 chat
+│   │   │   └── 📄 route.ts
+│   │   └── 📁 proxy
+│   │       └── 📁 tactiq
+│   │           └── 📁 [...path]
+│   │               └── 📄 route.ts
+│   ├── 📁 auth
+│   │   ├── 📁 components
+│   │   │   ├── 📄 AuthCard.tsx
+│   │   │   └── 📄 SocialButton.tsx
+│   │   ├── 📁 login
+│   │   │   └── 📄 page.tsx
+│   │   ├── 📁 register
+│   │   │   └── 📄 page.tsx
+│   │   └── 📄 layout.tsx
+│   ├── 📁 chat
+│   │   └── 📄 page.tsx
+│   ├── 📁 como-funciona
+│   │   └── 📄 page.tsx
+│   ├── 📁 privacidade
+│   │   └── 📄 page.tsx
+│   ├── 📁 termos
+│   │   └── 📄 page.tsx
+│   ├── 🎨 globals.css
+│   ├── 📄 hydration-optimizer.tsx
+│   ├── 📄 layout.tsx
+│   ├── 🎨 syntax-highlight.css
+│   └── 📄 web-vitals.tsx
+├── 📁 components
+│   ├── 📁 animations
+│   │   └── 📄 LazyMotionProvider.tsx
+│   ├── 📁 chat
+│   │   ├── 📄 ChatHeader.tsx
+│   │   ├── 📄 ChatInput.tsx
+│   │   ├── 📄 ChatList.tsx
+│   │   ├── 📄 ChatWindow.tsx
+│   │   ├── 📄 ConnectionIndicator.tsx
+│   │   ├── 📄 HelpModal.tsx
+│   │   ├── 📄 MarkdownMessage.tsx
+│   │   ├── 📄 MessageBubble.tsx
+│   │   ├── 📄 MessageContextMenu.tsx
+│   │   ├── 📄 OnboardingTour.tsx
+│   │   └── 📄 SearchAutocomplete.tsx
+│   ├── 📁 ui
+│   │   ├── 📄 avatar.tsx
+│   │   ├── 📄 blur-fade.tsx
+│   │   ├── 📄 button.tsx
+│   │   ├── 📄 card.tsx
+│   │   ├── 📄 checkbox.tsx
+│   │   ├── 📄 confirm-dialog.tsx
+│   │   ├── 📄 dot-pattern.tsx
+│   │   ├── 📄 dropdown-menu.tsx
+│   │   ├── 📄 input.tsx
+│   │   ├── 📄 label.tsx
+│   │   ├── 📄 password-input.tsx
+│   │   ├── 📄 scroll-area.tsx
+│   │   ├── 📄 separator.tsx
+│   │   ├── 📄 skeleton.tsx
+│   │   ├── 📄 theme-toggle.tsx
+│   │   ├── 📄 toast.tsx
+│   │   └── 📄 tooltip.tsx
+│   └── 📄 proxy-interceptor-init.tsx
+├── 📁 contexts
+│   └── 📄 AuthContext.tsx
+├── 📁 docs
+│   ├── 📝 BACKEND_INTEGRATION.md
+│   ├── 📝 CORS_PROXY_SOLUTION.md
+│   ├── 📝 PERFORMANCE_BASELINE.md
+│   ├── 📝 PPR_STRATEGY.md
+│   ├── 📝 TESTING_GUIDE.md
+│   ├── 📝 requirements-catalog.md
+│   └── 📝 requirements-gap-matrix.md
+├── 📁 hooks
+│   ├── 📄 use-auth-form.ts
+│   ├── 📄 use-chat-websocket.ts
+│   ├── 📄 use-keyboard-shortcuts.ts
+│   ├── 📄 use-media-query.ts
+│   └── 📄 use-motion-ready.ts
+├── 📁 lib
+│   ├── 📁 api
+│   │   ├── 📄 auth.ts
+│   │   └── 📄 chat.ts
+│   ├── 📁 storage
+│   │   └── 📄 messages.ts
+│   ├── 📄 date-utils.ts
+│   ├── 📄 message-utils.ts
+│   ├── 📄 motion-features.ts
+│   ├── 📄 proxy-interceptor.ts
+│   ├── 📄 session.ts
+│   └── 📄 utils.ts
+├── 📁 public
+│   ├── 📁 assets
+│   │   └── 📁 branding
+│   │       ├── 🖼️ apple-touch-icon.png
+│   │       ├── 🖼️ denguegen-icon.png
+│   │       ├── 🖼️ denguegen-logo.png
+│   │       ├── 🖼️ favicon-16x16.png
+│   │       ├── 🖼️ favicon-32x32.png
+│   │       ├── 📄 favicon.ico
+│   │       └── 🖼️ unnamed.jpg
+│   └── 📄 favicon.ico
+├── 📁 types
+│   ├── 📄 auth.ts
+│   └── 📄 chat.ts
+├── ⚙️ .editorconfig
+├── ⚙️ .env.example
+├── ⚙️ .eslintrc.json
+├── ⚙️ .gitignore
+├── 📝 INTEGRATION_GUIDE.md
+├── 📝 PLANODEACAO.md
+├── 📝 PRD.md
+├── 📝 PROJECT_STRUTURE.md
+├── 📝 QUICK_START.md
+├── 📝 README.md
+├── 📝 STYLE_GUIDE.md
+├── 📄 next.config.js
+├── ⚙️ package-lock.json
+├── ⚙️ package.json
+├── 📄 postcss.config.js
+├── 📄 proxy.ts
+├── 📄 tailwind.config.ts
+└── ⚙️ tsconfig.json
+```
+
+---
+*Generated by FileTree Pro Extension*
