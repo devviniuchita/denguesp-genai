@@ -1,12 +1,13 @@
 {
-  "name": "ai-chat-frontend",
+  "name": "denguesp-genai",
   "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "next lint . --ext .ts,.tsx,.js,.jsx",
+    "type-check": "tsc --noEmit",
     "analyze": "cross-env ANALYZE=true next build"
   },
   "dependencies": {
