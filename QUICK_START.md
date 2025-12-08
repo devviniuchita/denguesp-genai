@@ -37,13 +37,16 @@ Ver estrutura completa em `README.md`
 
 - Interface estilo WhatsApp completa
 - Tour onboarding em 4 passos + modal de ajuda com atalhos
-- 10 componentes de chat funcionais
+- 11 componentes de chat funcionais
 - Animações suaves com Framer Motion
 - Responsividade mobile-first
-- Acessibilidade WCAG AA
+- Acessibilidade WCAG AA (elementos semânticos, ARIA labels)
 - Dark mode completo
 - Proxy Tactiq ativo (interceptor + rota `/api/proxy/tactiq/[...path]`)
-- Preparado para integração com backend (hooks e services já prontos, porém ainda não conectados)
+- Preparado para integração com backend (hooks e services já prontos)
+- **SonarQube compliance** - Zero warnings, código limpo
+- **React Compiler** - Otimizações automáticas habilitadas
+- **Turbopack** - Build ultra-rápido em desenvolvimento
 
 Para detalhes completos, veja `README.md`
 
@@ -64,10 +67,12 @@ Para detalhes completos, veja `README.md`
 ## 🔧 Comandos Disponíveis
 
 ```bash
-npm run dev      # Desenvolvimento
-npm run build    # Build produção
-npm run start    # Executar produção
-npm run lint     # Verificar código
+npm run dev        # Desenvolvimento (Turbopack)
+npm run build      # Build produção
+npm run start      # Executar produção
+npm run lint       # Verificar código (zero warnings)
+npm run type-check # Verificar tipos TypeScript
+npm run analyze    # Analisar bundle
 ```
 
 ## 📚 Documentação

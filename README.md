@@ -13,14 +13,17 @@ Frontend moderno estilo WhatsApp para interação com agente de IA, construído 
 
 ## 🚀 Tecnologias
 
-- **Next.js** - Framework React com SSR
-- **TypeScript** - Type safety
-- **Tailwind CSS** - Estilização utilitária
+- **Next.js 16** - Framework React com App Router e Turbopack
+- **React 19** - Com React Compiler habilitado
+- **TypeScript 5.5** - Type safety com strict mode
+- **Tailwind CSS 3.4** - Estilização utilitária
 - **shadcn/ui** - Componentes UI premium
 - **Framer Motion** - Animações
 - **Radix UI** - Componentes acessíveis
+- **Zod 4** - Validação de schemas
+- **ESLint 9** - Flat config com zero warnings policy
 
-## ⚙️ Estado Atual (Nov/2025)
+## ⚙️ Estado Atual (Dez/2025)
 
 - UI 100% client-side usando mocks em `app/page.tsx` (nenhuma chamada real ao backend ainda).
 - Proxy Tactiq ativo: `ProxyInterceptorInit` importa `lib/proxy-interceptor.ts`, que redireciona qualquer `ffp.tactiq.io` para `/app/api/proxy/tactiq/[...path]/route.ts`.
@@ -65,9 +68,11 @@ ai-chat-frontend/
 │   ├── CORS_PROXY_SOLUTION.md               # Documentação do proxy Tactiq
 │   └── TESTING_GUIDE.md                     # Passos de validação
 ├── hooks/
+│   ├── use-auth-form.ts                     # Hook para formulários de autenticação
 │   ├── use-chat-websocket.ts                # Hook pronto para streaming futuro
 │   ├── use-keyboard-shortcuts.ts
-│   └── use-media-query.ts
+│   ├── use-media-query.ts
+│   └── use-motion-ready.ts                  # Hook para otimização de animações
 ├── lib/
 │   ├── api/chat.ts                          # Client REST mockado
 │   ├── date-utils.ts                        # Helpers de formatação
