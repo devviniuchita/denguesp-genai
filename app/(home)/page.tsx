@@ -57,7 +57,7 @@ export default function LandingPage() {
             </div>
 
             <div className='grid grid-cols-1 md:grid-cols-3 gap-8'>
-              <Card className='bg-background/50 backdrop-blur-sm border-none shadow-sm hover:shadow-md transition-shadow'>
+              <Card className='bg-background/50 backdrop-blur-sm border-none shadow-sm hover:shadow-[0_8px_32px_rgba(0,92,255,0.15)] transition-all duration-300 hover:-translate-y-1'>
                 <CardHeader>
                   <div className='h-12 w-12 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center mb-4'>
                     <ShieldCheck className='h-6 w-6' />
@@ -69,7 +69,7 @@ export default function LandingPage() {
                 </CardContent>
               </Card>
 
-              <Card className='bg-background/50 backdrop-blur-sm border-none shadow-sm hover:shadow-md transition-shadow'>
+              <Card className='bg-background/50 backdrop-blur-sm border-none shadow-sm hover:shadow-[0_8px_32px_rgba(0,92,255,0.15)] transition-all duration-300 hover:-translate-y-1'>
                 <CardHeader>
                   <div className='h-12 w-12 rounded-lg bg-green-100 text-green-600 flex items-center justify-center mb-4'>
                     <Zap className='h-6 w-6' />
@@ -81,7 +81,7 @@ export default function LandingPage() {
                 </CardContent>
               </Card>
 
-              <Card className='bg-background/50 backdrop-blur-sm border-none shadow-sm hover:shadow-md transition-shadow'>
+              <Card className='bg-background/50 backdrop-blur-sm border-none shadow-sm hover:shadow-[0_8px_32px_rgba(0,92,255,0.15)] transition-all duration-300 hover:-translate-y-1'>
                 <CardHeader>
                   <div className='h-12 w-12 rounded-lg bg-purple-100 text-purple-600 flex items-center justify-center mb-4'>
                     <MessageCircle className='h-6 w-6' />

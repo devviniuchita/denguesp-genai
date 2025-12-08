@@ -38,7 +38,7 @@ export function HeroHeadline() {
           className="text-4xl md:text-6xl font-extrabold tracking-tight lg:text-7xl"
         >
           Assistente especializado em{" "}
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#005cff] to-[#0036b3] animated-gradient">
+          <span className="text-white bg-gradient-to-r from-[#005cff] to-[#0036b3] animated-gradient px-3 py-1 rounded-md">
             dengue
           </span>{" "}
           para São Paulo
@@ -88,14 +88,21 @@ export function HeroHeadline() {
           className="flex items-center gap-4 text-sm text-muted-foreground mt-4"
         >
           <div className="flex -space-x-2">
-            {[1, 2, 3].map((i) => (
-              <div
-                key={i}
-                className="h-8 w-8 rounded-full border-2 border-background bg-muted flex items-center justify-center text-[10px] font-bold"
-              >
-                {String.fromCodePoint(64 + i)}
-              </div>
-            ))}
+            {[1, 2, 3].map((i) => {
+              const colors = {
+                1: "bg-red-500",
+                2: "bg-yellow-500",
+                3: "bg-green-500"
+              };
+              return (
+                <div
+                  key={i}
+                  className={`h-8 w-8 rounded-full flex items-center justify-center text-[10px] font-bold text-white ${colors[i as keyof typeof colors]}`}
+                >
+                  {String.fromCodePoint(64 + i)}
+                </div>
+              );
+            })}
           </div>
           <p>Junte-se a milhares de cidadãos informados</p>
         </m.div>
