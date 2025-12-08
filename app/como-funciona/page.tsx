@@ -46,9 +46,9 @@ export default function ComoFuncionaPage() {
       <main className="container mx-auto px-6 py-12 lg:py-16 max-w-5xl">
         {/* Hero Section */}
         <section className="mb-16 text-center md:text-left">
-          <div className="inline-flex items-center justify-center p-3 bg-primary/10 rounded-2xl mb-6">
+          <Link href="/" className="inline-flex items-center justify-center p-3 bg-primary/10 rounded-2xl mb-6 hover:bg-primary/20 transition-colors">
             <Bot className="h-8 w-8 text-primary" />
-          </div>
+          </Link>
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/60">
             Entenda como o DengueSP-Gen funciona
           </h1>
@@ -438,9 +438,25 @@ export default function ComoFuncionaPage() {
       {/* Footer */}
       <footer className="border-t bg-background/50 mt-16">
         <div className="container mx-auto px-6 py-8">
-          <p className="text-center text-sm text-muted-foreground">
-            © 2025 DengueSP-Gen. Todos os direitos reservados.
-          </p>
+          <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+            <Link href='/' className='flex items-center gap-2 hover:opacity-80 transition-opacity'>
+              <div className='h-6 w-6 rounded bg-primary/20 flex items-center justify-center'>
+                <span className='text-xs font-bold text-primary'>D</span>
+              </div>
+              <span className='font-semibold'>DengueSP-Gen</span>
+            </Link>
+            <p className="text-sm text-muted-foreground">
+              © 2025 DengueSP-Gen. Todos os direitos reservados.
+            </p>
+            <div className="flex gap-6 text-sm text-muted-foreground">
+              <a href='/privacidade' className='hover:text-foreground'>
+                Privacidade
+              </a>
+              <a href='/termos' className='hover:text-foreground'>
+                Termos
+              </a>
+            </div>
+          </div>
         </div>
       </footer>
     </div>

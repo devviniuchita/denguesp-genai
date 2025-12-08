@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { MessageCircle, ShieldCheck, Zap } from 'lucide-react';
 import dynamic from 'next/dynamic';
+import Link from 'next/link';
 import { Suspense } from 'react';
 import { HeroHeadline } from './components/HeroHeadline';
 import { HeroNavigation } from './components/HeroNavigation';
@@ -99,14 +100,14 @@ export default function LandingPage() {
         {/* Footer */}
         <footer className='border-t py-12 bg-background'>
           <div className='container mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6'>
-            <div className='flex items-center gap-2'>
+            <Link href='/' className='flex items-center gap-2 hover:opacity-80 transition-opacity'>
               <div className='h-6 w-6 rounded bg-primary/20 flex items-center justify-center'>
                 <span className='text-xs font-bold text-primary'>D</span>
               </div>
               <span className='font-semibold'>DengueSP-Gen</span>
-            </div>
+            </Link>
             <p className='text-sm text-muted-foreground'>
-              © 2024 DengueSP-Gen. Todos os direitos reservados.
+              © 2025 DengueSP-Gen. Todos os direitos reservados.
             </p>
             <div className='flex gap-6 text-sm text-muted-foreground'>
               <a href='/privacidade' className='hover:text-foreground'>
