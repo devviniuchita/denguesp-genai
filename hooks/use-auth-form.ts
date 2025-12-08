@@ -5,14 +5,30 @@ import { AuthResponse } from '@/types/auth';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { DefaultValues, FieldValues, SubmitHandler, useForm } from 'react-hook-form';
-import { ZodType } from 'zod';
+import {
+  DefaultValues,
+  FieldValues,
+  Resolver,
+  SubmitHandler,
+  useForm,
+  UseFormReturn,
+} from 'react-hook-form';
+import type { z } from 'zod';
+
+// Re-export input type for consumers
+export type { z };
 
 interface UseAuthFormProps<T extends FieldValues> {
-  schema: ZodType<T>;
+  schema: z.ZodType<T>;
   defaultValues: DefaultValues<T>;
   onSubmit: (data: T) => Promise<AuthResponse>;
   successMessage?: string;
+}
+
+interface UseAuthFormReturn<T extends FieldValues> {
+  form: UseFormReturn<T>;
+  isLoading: boolean;
+  handleSubmit: ReturnType<UseFormReturn<T>['handleSubmit']>;
 }
 
 export function useAuthForm<T extends FieldValues>({
@@ -20,13 +36,15 @@ export function useAuthForm<T extends FieldValues>({
   defaultValues,
   onSubmit,
   successMessage,
-}: UseAuthFormProps<T>) {
+}: UseAuthFormProps<T>): UseAuthFormReturn<T> {
   const [isLoading, setIsLoading] = useState(false);
   const { addToast } = useToast();
   const router = useRouter();
 
+  // Type assertion to handle Zod 4 / @hookform/resolvers compatibility
+  // zodResolver runtime implementation handles both Zod 3 and 4 schemas correctly
   const form = useForm<T>({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(schema as never) as Resolver<T>,
     defaultValues,
   });
 
@@ -57,7 +75,7 @@ export function useAuthForm<T extends FieldValues>({
           description: response.error || 'Ocorreu um erro. Tente novamente.',
         });
       }
-    } catch (_error) {
+    } catch {
       addToast({
         type: 'error',
         description: 'Erro de conexão. Verifique sua internet.',
@@ -70,6 +88,7 @@ export function useAuthForm<T extends FieldValues>({
   return {
     form,
     isLoading,
-    handleSubmit: form.handleSubmit(handleSubmit),
+    // Cast needed due to Zod 4 / react-hook-form type incompatibility
+    handleSubmit: form.handleSubmit(handleSubmit as SubmitHandler<FieldValues>),
   };
 }

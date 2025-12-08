@@ -17,10 +17,8 @@ const loginSchema = z.object({
   password: z.string().min(1, 'A senha é obrigatória'),
 });
 
-type LoginFormValues = z.infer<typeof loginSchema>;
-
 export default function LoginPage() {
-  const { form, isLoading, handleSubmit } = useAuthForm<LoginFormValues>({
+  const { form, isLoading, handleSubmit } = useAuthForm({
     schema: loginSchema,
     defaultValues: {
       email: '',

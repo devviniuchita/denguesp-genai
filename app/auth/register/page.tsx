@@ -33,10 +33,8 @@ const registerSchema = z
     path: ['confirmPassword'],
   });
 
-type RegisterFormValues = z.infer<typeof registerSchema>;
-
 export default function RegisterPage() {
-  const { form, isLoading, handleSubmit } = useAuthForm<RegisterFormValues>({
+  const { form, isLoading, handleSubmit } = useAuthForm({
     schema: registerSchema,
     defaultValues: {
       name: '',
