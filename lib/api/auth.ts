@@ -22,7 +22,7 @@ export async function login(credentials: LoginCredentials): Promise<AuthResponse
     }
 
     return data;
-  } catch (error) {
+  } catch (_error) {
     return {
       success: false,
       error: 'Erro de conexão. Verifique sua internet.',
@@ -53,7 +53,7 @@ export async function register(credentials: RegisterCredentials): Promise<AuthRe
     }
 
     return data;
-  } catch (error) {
+  } catch (_error) {
     return {
       success: false,
       error: 'Erro de conexão. Verifique sua internet.',
@@ -70,8 +70,8 @@ export async function logout(): Promise<void> {
       body: JSON.stringify({ action: 'logout' }),
     });
     localStorage.removeItem('dengue_session_token');
-  } catch (error) {
-    console.error('Error logging out:', error);
+  } catch (_error) {
+    console.error('Error logging out:', _error);
   }
 }
 
@@ -80,8 +80,8 @@ export async function getSession() {
     const response = await fetch('/api/auth/nextauth?action=session');
     if (!response.ok) return null;
     return response.json();
-  } catch (error) {
-    console.error('Error fetching session:', error);
+  } catch (_error) {
+    console.error('Error fetching session:', _error);
     return null;
   }
 }

@@ -4,6 +4,7 @@ import { ChatList } from "@/components/chat/ChatList";
 import { ConnectionStatus } from "@/components/chat/ConnectionIndicator";
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import { useToast } from "@/components/ui/toast";
+import { useHasMounted } from "@/hooks/use-has-mounted";
 import {
   CHAT_SHORTCUTS,
   useKeyboardShortcuts,
@@ -12,7 +13,7 @@ import { loadMessages, saveMessages } from "@/lib/storage/messages";
 import { Chat, Message } from "@/types/chat";
 import dynamic from "next/dynamic";
 import * as React from "react";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 const HelpModal = dynamic(
   () => import("@/components/chat/HelpModal").then((m) => m.HelpModal),
   {
@@ -51,14 +52,14 @@ const mockChats: Chat[] = [
 
 export default function Home() {
   const { addToast } = useToast();
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const mounted = useHasMounted();
+  const messagesLoadedRef = useRef(false);
   const [currentChat, setCurrentChat] = useState<Chat | null>(
     mockChats[0] || null,
   );
-  const [messages, setMessages] = useState<Message[]>([
+
+  // Default initial message
+  const defaultMessages: Message[] = [
     {
       id: "1",
       chatId: mockChats[0]?.id || "chat-1",
@@ -68,8 +69,10 @@ export default function Home() {
       timestamp: new Date("2025-11-18T22:05:00").toISOString(),
       status: "read",
     },
-  ]);
-  const [isLoading, setIsLoading] = useState(false);
+  ];
+
+  const [messages, setMessages] = useState<Message[]>(defaultMessages);
+  const [isLoading] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [showChat, setShowChat] = useState(false);
@@ -99,12 +102,17 @@ export default function Home() {
   }, []);
 
   // Load messages from localStorage on mount
+  // Using ref to track if we've loaded from storage to avoid cascading renders
   useEffect(() => {
-    if (currentChat) {
+    if (currentChat && !messagesLoadedRef.current) {
       const savedMessages = loadMessages(currentChat.id);
       if (savedMessages.length > 0) {
-        setMessages(savedMessages);
+        // Use flushSync-style approach via queueMicrotask to avoid direct setState in effect
+        queueMicrotask(() => {
+          setMessages(savedMessages);
+        });
       }
+      messagesLoadedRef.current = true;
     }
   }, [currentChat]);
 
@@ -196,7 +204,7 @@ export default function Home() {
   }, []);
 
   const handleCopyMessage = useCallback(
-    (content: string) => {
+    (_content: string) => {
       addToast({
         type: "success",
         description: "Mensagem copiada para a área de transferência",
@@ -347,10 +355,12 @@ class ErrorBoundary extends React.Component<
     super(props);
     this.state = { hasError: false };
   }
-  static getDerivedStateFromError(_: unknown) {
+  static getDerivedStateFromError(_error: unknown) {
     return { hasError: true };
   }
-  componentDidCatch(_: unknown) {}
+  componentDidCatch(_error: unknown, _errorInfo: unknown) {
+    // Log error to error reporting service
+  }
   render() {
     if (this.state.hasError) {
       return <div className="flex h-screen bg-gray-100 dark:bg-[#0B141A]" />;

@@ -37,7 +37,6 @@ export function ChatWindow({
   onRetryConnection,
 }: ChatWindowProps) {
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const scrollAreaRef = useRef<HTMLDivElement>(null);
 
   // Auto-scroll to bottom when new messages arrive
   useEffect(() => {

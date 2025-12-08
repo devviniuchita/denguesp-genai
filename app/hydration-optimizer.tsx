@@ -14,6 +14,24 @@ import { useEffect, useState } from 'react';
  * Reference: Google's requestIdleCallback for deferring work
  */
 
+// Type declarations for requestIdleCallback (not in lib.dom.d.ts by default)
+type IdleRequestCallback = (deadline: IdleDeadline) => void;
+
+interface IdleDeadline {
+  readonly didTimeout: boolean;
+  timeRemaining(): number;
+}
+
+interface IdleRequestOptions {
+  timeout?: number;
+}
+
+// Extend Window interface for browsers that support requestIdleCallback
+interface WindowWithIdleCallback extends Window {
+  requestIdleCallback(callback: IdleRequestCallback, options?: IdleRequestOptions): number;
+  cancelIdleCallback(handle: number): void;
+}
+
 interface HydrationOptimizerProps {
   children: React.ReactNode;
 }
@@ -28,14 +46,16 @@ export function useIdleHydration() {
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
+    const win = window as WindowWithIdleCallback;
+
     // Use requestIdleCallback if available, fallback to setTimeout
-    if ('requestIdleCallback' in window) {
-      const id = (window as any).requestIdleCallback(() => {
+    if ('requestIdleCallback' in win) {
+      const id = win.requestIdleCallback(() => {
         setIsHydrated(true);
       });
 
       return () => {
-        (window as any).cancelIdleCallback(id);
+        win.cancelIdleCallback(id);
       };
     } else {
       // Fallback for browsers without requestIdleCallback
@@ -63,13 +83,15 @@ export function useDeferredEventListener(
   useEffect(() => {
     if (!target) return;
 
-    if ('requestIdleCallback' in window) {
-      const id = (window as any).requestIdleCallback(() => {
+    const win = window as WindowWithIdleCallback;
+
+    if ('requestIdleCallback' in win) {
+      const id = win.requestIdleCallback(() => {
         target.addEventListener(eventName, handler, options);
       });
 
       return () => {
-        (window as any).cancelIdleCallback(id);
+        win.cancelIdleCallback(id);
         target.removeEventListener(eventName, handler, options);
       };
     } else {

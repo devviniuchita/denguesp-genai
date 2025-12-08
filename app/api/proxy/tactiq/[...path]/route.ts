@@ -89,7 +89,7 @@ async function handleProxyRequest(
 
     // Obter resposta
     const data = await response.text()
-    let jsonData: any
+    let jsonData: unknown
     try {
       jsonData = JSON.parse(data)
     } catch {

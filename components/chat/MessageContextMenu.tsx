@@ -1,11 +1,10 @@
 "use client"
 
-import * as React from "react"
-import { motion, AnimatePresence } from "framer-motion"
-import { Copy, Edit, Trash2, MoreVertical } from "lucide-react"
-import { Button } from "@/components/ui/button"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { cn } from "@/lib/utils"
+import { AnimatePresence, motion } from "framer-motion"
+import { Copy, Edit, Trash2 } from "lucide-react"
+import * as React from "react"
 
 interface MessageContextMenuProps {
   messageId: string
@@ -17,7 +16,6 @@ interface MessageContextMenuProps {
 }
 
 export function MessageContextMenu({
-  messageId,
   onCopy,
   onEdit,
   onDelete,

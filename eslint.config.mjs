@@ -15,6 +15,20 @@ const eslintConfig = defineConfig([
 		'node_modules/**',
 		'next-env.d.ts',
 	]),
+	{
+		// Customização de regras TypeScript
+		rules: {
+			// Permitir variáveis prefixadas com _ (convenção para intencionalmente não usadas)
+			'@typescript-eslint/no-unused-vars': [
+				'warn',
+				{
+					argsIgnorePattern: '^_',
+					varsIgnorePattern: '^_',
+					caughtErrorsIgnorePattern: '^_',
+				},
+			],
+		},
+	},
 ]);
 
 export default eslintConfig;

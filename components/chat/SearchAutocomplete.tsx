@@ -1,10 +1,10 @@
 "use client"
 
-import * as React from "react"
-import { motion, AnimatePresence } from "framer-motion"
-import { Search, Clock, TrendingUp } from "lucide-react"
-import { Chat } from "@/types/chat"
 import { cn } from "@/lib/utils"
+import { Chat } from "@/types/chat"
+import { AnimatePresence, motion } from "framer-motion"
+import { Clock, Search, TrendingUp } from "lucide-react"
+import * as React from "react"
 
 interface SearchAutocompleteProps {
   query: string
@@ -298,7 +298,7 @@ export function SearchAutocomplete({
                 <Search className="h-3.5 w-3.5" />
                 Chats
               </div>
-              {filteredChats.map((chat, index) => {
+              {filteredChats.map((chat, _index) => {
                 const itemIndex = allItems.findIndex((item) => item.type === "chat" && (item.data as Chat).id === chat.id)
                 const isSelected = itemIndex >= 0 && selectedIndex === itemIndex
                 return (

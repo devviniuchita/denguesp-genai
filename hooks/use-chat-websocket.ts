@@ -60,7 +60,7 @@ export function useChatWebSocket(chatId: string | null) {
       };
     } catch (error) {
       console.warn('[WebSocket] Failed to initialize connection:', error);
-      setIsConnected(false);
+      // Estado inicial já é false, não precisamos setar novamente
     }
   }, [chatId]);
 

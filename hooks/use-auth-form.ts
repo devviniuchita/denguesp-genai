@@ -1,6 +1,7 @@
 'use client';
 
 import { useToast } from '@/components/ui/toast';
+import { AuthResponse } from '@/types/auth';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -10,7 +11,7 @@ import { ZodType } from 'zod';
 interface UseAuthFormProps<T extends FieldValues> {
   schema: ZodType<T>;
   defaultValues: DefaultValues<T>;
-  onSubmit: (data: T) => Promise<any>;
+  onSubmit: (data: T) => Promise<AuthResponse>;
   successMessage?: string;
 }
 
@@ -25,7 +26,7 @@ export function useAuthForm<T extends FieldValues>({
   const router = useRouter();
 
   const form = useForm<T>({
-    resolver: zodResolver(schema as any),
+    resolver: zodResolver(schema),
     defaultValues,
   });
 
@@ -56,7 +57,7 @@ export function useAuthForm<T extends FieldValues>({
           description: response.error || 'Ocorreu um erro. Tente novamente.',
         });
       }
-    } catch (error) {
+    } catch (_error) {
       addToast({
         type: 'error',
         description: 'Erro de conexão. Verifique sua internet.',
@@ -69,6 +70,6 @@ export function useAuthForm<T extends FieldValues>({
   return {
     form,
     isLoading,
-    handleSubmit: form.handleSubmit(handleSubmit as any),
+    handleSubmit: form.handleSubmit(handleSubmit),
   };
 }

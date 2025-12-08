@@ -1,10 +1,9 @@
 "use client"
 
-import * as React from "react"
-import { motion, AnimatePresence } from "framer-motion"
-import { Wifi, WifiOff, AlertCircle } from "lucide-react"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { cn } from "@/lib/utils"
+import { motion } from "framer-motion"
+import { AlertCircle, Wifi, WifiOff } from "lucide-react"
 
 export type ConnectionStatus = "connected" | "disconnected" | "reconnecting" | "error"
 

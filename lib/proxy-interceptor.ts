@@ -3,6 +3,12 @@
  * e redirecioná-las para o proxy local do Next.js
  */
 
+// Interface para extender XMLHttpRequest com propriedades customizadas
+interface ExtendedXMLHttpRequest extends XMLHttpRequest {
+  _originalUrl?: string;
+  _proxyUrl?: string;
+}
+
 if (typeof window !== 'undefined') {
   const originalFetch = window.fetch;
 
@@ -114,8 +120,9 @@ if (typeof window !== 'undefined') {
         console.log(`[Proxy Interceptor] XHR Redirecting ${urlString} to ${proxyUrl}`);
 
         // Armazenar URL original para uso no send
-        (this as any)._originalUrl = urlString;
-        (this as any)._proxyUrl = proxyUrl;
+        const extThis = this as ExtendedXMLHttpRequest;
+        extThis._originalUrl = urlString;
+        extThis._proxyUrl = proxyUrl;
 
         return originalXHROpen.call(
           this,
@@ -142,8 +149,9 @@ if (typeof window !== 'undefined') {
 
   XMLHttpRequest.prototype.send = function (body?: Document | XMLHttpRequestBodyInit | null) {
     // Adicionar header com URL original se existir
-    if ((this as any)._originalUrl) {
-      this.setRequestHeader('X-Original-URL', (this as any)._originalUrl);
+    const extThis = this as ExtendedXMLHttpRequest;
+    if (extThis._originalUrl) {
+      this.setRequestHeader('X-Original-URL', extThis._originalUrl);
     }
 
     return originalXHRSend.call(this, body);
@@ -152,4 +160,4 @@ if (typeof window !== 'undefined') {
   console.log('[Proxy Interceptor] Initialized - intercepting requests to ffp.tactiq.io');
 }
 
-export {};
+export { };

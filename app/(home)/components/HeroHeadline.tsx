@@ -4,7 +4,6 @@ import { LazyMotionProvider } from "@/components/animations/LazyMotionProvider";
 import { Button } from "@/components/ui/button";
 import { useMotionReady } from "@/hooks/use-motion-ready";
 import { m, type MotionProps } from "framer-motion";
-import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { InitiateChatButton } from "./InitiateChatButton";
 

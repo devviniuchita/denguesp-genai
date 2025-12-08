@@ -2,10 +2,9 @@
 
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/AuthContext";
+import { useHasMounted } from "@/hooks/use-has-mounted";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
 
 /**
  * Smart button that redirects based on authentication state:
@@ -14,13 +13,7 @@ import { useEffect, useState } from "react";
  */
 export function InitiateChatButton() {
   const { isAuthenticated, isLoading } = useAuth();
-  const router = useRouter();
-  const [mounted, setMounted] = useState(false);
-
-  // Prevent hydration mismatch
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const mounted = useHasMounted();
 
   if (!mounted || isLoading) {
     // Show loading state during hydration

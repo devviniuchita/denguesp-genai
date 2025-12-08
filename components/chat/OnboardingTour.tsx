@@ -1,10 +1,10 @@
 "use client"
 
-import * as React from "react"
-import { motion, AnimatePresence } from "framer-motion"
-import { X, ArrowRight, ArrowLeft, Check } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
+import { AnimatePresence, motion } from "framer-motion"
+import { ArrowLeft, ArrowRight, Check, X } from "lucide-react"
+import * as React from "react"
 
 interface TourStep {
   id: string
@@ -78,10 +78,10 @@ export function OnboardingTour({ onComplete }: OnboardingTourProps) {
     }, 300)
   }
 
-  const getTargetElement = () => {
+  const getTargetElement = React.useCallback(() => {
     if (!step.target) return null
     return document.querySelector(step.target) as HTMLElement
-  }
+  }, [step.target])
 
   React.useEffect(() => {
     if (!isVisible) return
@@ -100,7 +100,7 @@ export function OnboardingTour({ onComplete }: OnboardingTourProps) {
         element.style.outlineOffset = ""
       }
     }
-  }, [currentStep, isVisible, step.target])
+  }, [currentStep, isVisible, getTargetElement])
 
   if (!isVisible) return null
 

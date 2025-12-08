@@ -1,24 +1,21 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useSyncExternalStore } from "react"
 
+/**
+ * Hook para detectar media queries de forma segura para hidratação.
+ * Usa useSyncExternalStore para evitar mismatches SSR/cliente.
+ */
 export function useMediaQuery(query: string): boolean {
-  const [matches, setMatches] = useState(false)
-
-  useEffect(() => {
-    const media = window.matchMedia(query)
-
-    if (media.matches !== matches) {
-      setMatches(media.matches)
-    }
-
-    const listener = () => setMatches(media.matches)
-    media.addEventListener("change", listener)
-
-    return () => media.removeEventListener("change", listener)
-  }, [matches, query])
-
-  return matches
+  return useSyncExternalStore(
+    (callback) => {
+      const media = globalThis.matchMedia(query)
+      media.addEventListener("change", callback)
+      return () => media.removeEventListener("change", callback)
+    },
+    () => globalThis.matchMedia(query).matches,
+    () => false // SSR sempre retorna false
+  )
 }
 
 export function useIsMobile() {

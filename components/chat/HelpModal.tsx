@@ -1,11 +1,10 @@
 "use client"
 
-import * as React from "react"
-import { motion, AnimatePresence } from "framer-motion"
-import { X, Keyboard, Search, MessageSquare, Copy, Edit, Trash2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
-import { cn } from "@/lib/utils"
+import { TooltipProvider } from "@/components/ui/tooltip"
+import { AnimatePresence, motion } from "framer-motion"
+import { Copy, Edit, Keyboard, MessageSquare, Search, Trash2, X } from "lucide-react"
+import * as React from "react"
 
 interface HelpModalProps {
   open: boolean

@@ -1,9 +1,9 @@
 "use client"
 
-import * as React from "react"
-import { motion, AnimatePresence } from "framer-motion"
-import { X, CheckCircle, AlertCircle, Info, XCircle } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { AnimatePresence, motion } from "framer-motion"
+import { AlertCircle, CheckCircle, Info, X, XCircle } from "lucide-react"
+import * as React from "react"
 
 export type ToastType = "success" | "error" | "info" | "warning"
 
@@ -26,6 +26,10 @@ const ToastContext = React.createContext<ToastContextValue | undefined>(undefine
 export function ToastProvider({ children }: { children: React.ReactNode }) {
   const [toasts, setToasts] = React.useState<Toast[]>([])
 
+  const removeToast = React.useCallback((id: string) => {
+    setToasts((prev) => prev.filter((toast) => toast.id !== id))
+  }, [])
+
   const addToast = React.useCallback((toast: Omit<Toast, "id">) => {
     const id = Math.random().toString(36).substring(2, 9)
     const newToast: Toast = {
@@ -35,17 +39,13 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
     }
     setToasts((prev) => [...prev, newToast])
 
-    // Auto remove after duration
+    // Auto remove after duration - usa functional update para evitar dependência de removeToast
     const duration = newToast.duration ?? 0
     if (duration > 0) {
       setTimeout(() => {
-        removeToast(id)
+        setToasts((prev) => prev.filter((t) => t.id !== id))
       }, duration)
     }
-  }, [])
-
-  const removeToast = React.useCallback((id: string) => {
-    setToasts((prev) => prev.filter((toast) => toast.id !== id))
   }, [])
 
   return (

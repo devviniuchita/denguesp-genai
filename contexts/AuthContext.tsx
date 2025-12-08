@@ -6,6 +6,7 @@ import { User } from "@/types/auth";
 import { useRouter } from "next/navigation";
 import React, {
   createContext,
+  useCallback,
   useContext,
   useEffect,
   useMemo,
@@ -48,7 +49,7 @@ export function AuthProvider({
     refreshSession();
   }, []);
 
-  const logout = async () => {
+  const logout = useCallback(async () => {
     try {
       await apiLogout();
       setSession(null);
@@ -56,7 +57,7 @@ export function AuthProvider({
     } catch (error) {
       console.error("Error logging out:", error);
     }
-  };
+  }, [router]);
 
   const value: AuthContextType = useMemo(
     () => ({
@@ -67,7 +68,7 @@ export function AuthProvider({
       logout,
       refreshSession,
     }),
-    [session, isLoading],
+    [session, isLoading, logout],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
