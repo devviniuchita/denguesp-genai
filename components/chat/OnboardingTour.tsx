@@ -45,7 +45,7 @@ const tourSteps: TourStep[] = [
 ]
 
 interface OnboardingTourProps {
-  onComplete: () => void
+  readonly onComplete: () => void
 }
 
 export function OnboardingTour({ onComplete }: OnboardingTourProps) {

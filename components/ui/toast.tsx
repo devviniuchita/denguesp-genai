@@ -5,6 +5,20 @@ import { AnimatePresence, motion } from "framer-motion"
 import { AlertCircle, CheckCircle, Info, X, XCircle } from "lucide-react"
 import * as React from "react"
 
+interface ToastProviderProps {
+  readonly children: React.ReactNode
+}
+
+interface ToastContainerProps {
+  readonly toasts: Toast[]
+  readonly removeToast: (id: string) => void
+}
+
+interface ToastItemProps {
+  readonly toast: Toast
+  readonly onRemove: (id: string) => void
+}
+
 export type ToastType = "success" | "error" | "info" | "warning"
 
 export interface Toast {
@@ -23,33 +37,51 @@ interface ToastContextValue {
 
 const ToastContext = React.createContext<ToastContextValue | undefined>(undefined)
 
-export function ToastProvider({ children }: { children: React.ReactNode }) {
+// Helper function to filter out toast by id
+function filterOutToast(toasts: Toast[], id: string): Toast[] {
+  return toasts.filter((t) => t.id !== id)
+}
+
+// Helper function to schedule toast removal
+function createToastRemovalScheduler(
+  setToasts: React.Dispatch<React.SetStateAction<Toast[]>>
+) {
+  return (toastId: string, duration: number) => {
+    if (duration > 0) {
+      setTimeout(() => {
+        setToasts((prev) => filterOutToast(prev, toastId))
+      }, duration)
+    }
+  }
+}
+
+export function ToastProvider({ children }: ToastProviderProps) {
   const [toasts, setToasts] = React.useState<Toast[]>([])
 
   const removeToast = React.useCallback((id: string) => {
-    setToasts((prev) => prev.filter((toast) => toast.id !== id))
+    setToasts((prev) => filterOutToast(prev, id))
   }, [])
+
+  const scheduleRemoval = React.useMemo(
+    () => createToastRemovalScheduler(setToasts),
+    []
+  )
 
   const addToast = React.useCallback((toast: Omit<Toast, "id">) => {
     const id = Math.random().toString(36).substring(2, 9)
-    const newToast: Toast = {
-      ...toast,
-      id,
-      duration: toast.duration ?? 3000,
-    }
+    const duration = toast.duration ?? 3000
+    const newToast: Toast = { ...toast, id, duration }
     setToasts((prev) => [...prev, newToast])
+    scheduleRemoval(id, duration)
+  }, [scheduleRemoval])
 
-    // Auto remove after duration - usa functional update para evitar dependência de removeToast
-    const duration = newToast.duration ?? 0
-    if (duration > 0) {
-      setTimeout(() => {
-        setToasts((prev) => prev.filter((t) => t.id !== id))
-      }, duration)
-    }
-  }, [])
+  const contextValue = React.useMemo(
+    () => ({ toasts, addToast, removeToast }),
+    [toasts, addToast, removeToast]
+  )
 
   return (
-    <ToastContext.Provider value={{ toasts, addToast, removeToast }}>
+    <ToastContext.Provider value={contextValue}>
       {children}
       <ToastContainer toasts={toasts} removeToast={removeToast} />
     </ToastContext.Provider>
@@ -64,13 +96,7 @@ export function useToast() {
   return context
 }
 
-function ToastContainer({
-  toasts,
-  removeToast,
-}: {
-  toasts: Toast[]
-  removeToast: (id: string) => void
-}) {
+function ToastContainer({ toasts, removeToast }: ToastContainerProps) {
   return (
     <div className="fixed bottom-0 right-0 z-50 flex flex-col gap-2 p-4 pointer-events-none max-w-md w-full" aria-live="polite" aria-atomic="true">
       <AnimatePresence>
@@ -82,7 +108,7 @@ function ToastContainer({
   )
 }
 
-function ToastItem({ toast, onRemove }: { toast: Toast; onRemove: (id: string) => void }) {
+function ToastItem({ toast, onRemove }: ToastItemProps) {
   const type = toast.type ?? "info"
 
   const icons = {

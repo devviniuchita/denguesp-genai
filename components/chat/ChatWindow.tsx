@@ -10,17 +10,17 @@ import { ChatInput } from './ChatInput';
 import { MessageBubble } from './MessageBubble';
 
 interface ChatWindowProps {
-  chat: Chat | null;
-  messages: Message[];
-  onSendMessage: (content: string) => void;
-  isLoading?: boolean;
-  isTyping?: boolean;
-  onBack?: () => void;
-  onCopyMessage?: (content: string) => void;
-  onEditMessage?: (messageId: string, newContent: string) => void;
-  onDeleteMessage?: (messageId: string) => void;
-  connectionStatus?: 'connected' | 'disconnected' | 'reconnecting' | 'error';
-  onRetryConnection?: () => void;
+  readonly chat: Chat | null;
+  readonly messages: Message[];
+  readonly onSendMessage: (content: string) => void;
+  readonly isLoading?: boolean;
+  readonly isTyping?: boolean;
+  readonly onBack?: () => void;
+  readonly onCopyMessage?: (content: string) => void;
+  readonly onEditMessage?: (messageId: string, newContent: string) => void;
+  readonly onDeleteMessage?: (messageId: string) => void;
+  readonly connectionStatus?: 'connected' | 'disconnected' | 'reconnecting' | 'error';
+  readonly onRetryConnection?: () => void;
 }
 
 export function ChatWindow({
@@ -109,8 +109,8 @@ export function ChatWindow({
         <div className='max-w-4xl mx-auto'>
           {isLoading && (
             <div className='space-y-4'>
-              {Array.from({ length: 6 }).map((_, i) => (
-                <div key={i} className='flex justify-start'>
+              {['skeleton-a', 'skeleton-b', 'skeleton-c', 'skeleton-d', 'skeleton-e', 'skeleton-f'].map((skeletonId) => (
+                <div key={skeletonId} className='flex justify-start'>
                   <div className='bg-white/80 dark:bg-[#202C33]/80 backdrop-blur-md rounded-2xl rounded-tl-sm px-4 py-3 shadow-md border border-gray-200/50 dark:border-gray-700/50 w-2/3'>
                     <div className='h-4 w-3/4 bg-gray-100 dark:bg-gray-800 shimmer-effect rounded mb-2' />
                     <div className='h-4 w-1/2 bg-gray-100 dark:bg-gray-800 shimmer-effect rounded' />

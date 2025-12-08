@@ -6,17 +6,17 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import {
-  DefaultValues,
-  FieldValues,
-  Resolver,
-  SubmitHandler,
-  useForm,
-  UseFormReturn,
+    DefaultValues,
+    FieldValues,
+    Resolver,
+    SubmitHandler,
+    useForm,
+    UseFormReturn,
 } from 'react-hook-form';
-import type { z } from 'zod';
+import { z } from 'zod';
 
-// Re-export input type for consumers
-export type { z };
+// Re-export Zod for consumers
+export { z } from 'zod';
 
 interface UseAuthFormProps<T extends FieldValues> {
   schema: z.ZodType<T>;

@@ -13,7 +13,7 @@ import Link from 'next/link';
 import { z } from 'zod';
 
 const loginSchema = z.object({
-  email: z.string().email('E-mail inválido'),
+  email: z.email({ message: 'E-mail inválido' }),
   password: z.string().min(1, 'A senha é obrigatória'),
 });
 

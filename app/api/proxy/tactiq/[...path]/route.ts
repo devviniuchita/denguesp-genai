@@ -57,18 +57,19 @@ async function handleProxyRequest(
     const pathArray = params?.path || []
     const path = Array.isArray(pathArray) ? pathArray.join('/') : String(pathArray || '')
     const searchParams = request.nextUrl.searchParams.toString()
-    const targetUrl = `${TACTIQ_PROXY_URL}/${path}${searchParams ? `?${searchParams}` : ''}`
+    const queryString = searchParams ? `?${searchParams}` : ''
+    const targetUrl = `${TACTIQ_PROXY_URL}/${path}${queryString}`
 
     // Obter headers da requisição original
     const headers: HeadersInit = {}
-    request.headers.forEach((value, key) => {
+    for (const [key, value] of request.headers.entries()) {
       // Não copiar headers que podem causar problemas
       if (
         !['host', 'connection', 'content-length'].includes(key.toLowerCase())
       ) {
         headers[key] = value
       }
-    })
+    }
 
     // Preparar body se existir
     let body: BodyInit | undefined

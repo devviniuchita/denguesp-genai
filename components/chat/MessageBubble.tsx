@@ -35,11 +35,11 @@ const MessageContextMenu = dynamic(
 );
 
 interface MessageBubbleProps {
-  message: Message;
-  isConsecutive?: boolean;
-  onCopy?: (content: string) => void;
-  onEdit?: (messageId: string, newContent: string) => void;
-  onDelete?: (messageId: string) => void;
+  readonly message: Message;
+  readonly isConsecutive?: boolean;
+  readonly onCopy?: (content: string) => void;
+  readonly onEdit?: (messageId: string, newContent: string) => void;
+  readonly onDelete?: (messageId: string) => void;
 }
 
 export function MessageBubble({
@@ -125,7 +125,7 @@ export function MessageBubble({
           isConsecutive && "mt-1",
         )}
       >
-        <motion.div
+        <motion.article
           ref={bubbleRef}
           className={cn(
             "max-w-[75%] md:max-w-[60%] rounded-2xl px-4 py-3 shadow-md hover:shadow-lg transition-shadow duration-200 relative",
@@ -134,7 +134,6 @@ export function MessageBubble({
               : "bg-white/80 dark:bg-[#202C33]/80 backdrop-blur-md text-gray-900 dark:text-white rounded-tl-sm border border-gray-200/50 dark:border-gray-700/50",
             isConsecutive && "mt-1",
           )}
-          role="article"
           aria-label={`Message from ${isUser ? "you" : "AI assistant"}`}
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
@@ -332,12 +331,11 @@ export function MessageBubble({
               </div>
             </>
           )}
-        </motion.div>
+        </motion.article>
 
         {/* Context Menu */}
         {isUser && showContextMenu && (
           <MessageContextMenu
-            messageId={message.id}
             position={menuPosition}
             onClose={() => setShowContextMenu(false)}
             onCopy={handleCopy}

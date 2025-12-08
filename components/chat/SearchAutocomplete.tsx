@@ -7,11 +7,11 @@ import { Clock, Search, TrendingUp } from "lucide-react"
 import * as React from "react"
 
 interface SearchAutocompleteProps {
-  query: string
-  chats: Chat[]
-  onSelectChat: (chat: Chat) => void
-  onSelectQuery?: (query: string) => void
-  className?: string
+  readonly query: string
+  readonly chats: Chat[]
+  readonly onSelectChat: (chat: Chat) => void
+  readonly onSelectQuery?: (query: string) => void
+  readonly className?: string
 }
 
 const MAX_RECENT_SEARCHES = 5
@@ -67,18 +67,18 @@ export function SearchAutocomplete({
     let index = 0
 
     if (!query.trim() && recentSearches.length > 0) {
-      recentSearches.forEach((search) => {
+      for (const search of recentSearches) {
         items.push({ type: "recent", data: search, index: index++ })
-      })
+      }
     }
 
     if (query.trim()) {
-      suggestions.forEach((suggestion) => {
+      for (const suggestion of suggestions) {
         items.push({ type: "suggestion", data: suggestion, index: index++ })
-      })
-      filteredChats.forEach((chat) => {
+      }
+      for (const chat of filteredChats) {
         items.push({ type: "chat", data: chat, index: index++ })
-      })
+      }
     }
 
     return items
@@ -227,12 +227,12 @@ export function SearchAutocomplete({
                 <Clock className="h-3.5 w-3.5" />
                 Recent Searches
               </div>
-              {recentSearches.map((search, index) => {
-                const itemIndex = allItems.findIndex((item) => item.type === "recent" && item.data === search && item.index === index)
+              {recentSearches.map((search) => {
+                const itemIndex = allItems.findIndex((item) => item.type === "recent" && item.data === search)
                 const isSelected = itemIndex >= 0 && selectedIndex === itemIndex
                 return (
                   <button
-                    key={index}
+                    key={`recent-${search}`}
                     ref={(el) => {
                       if (itemIndex >= 0) itemsRef.current[itemIndex] = el
                     }}
@@ -260,12 +260,12 @@ export function SearchAutocomplete({
                 <TrendingUp className="h-3.5 w-3.5" />
                 Suggestions
               </div>
-              {suggestions.map((suggestion, index) => {
+              {suggestions.map((suggestion) => {
                 const itemIndex = allItems.findIndex((item) => item.type === "suggestion" && item.data === suggestion)
                 const isSelected = itemIndex >= 0 && selectedIndex === itemIndex
                 return (
                   <button
-                    key={index}
+                    key={`suggestion-${suggestion}`}
                     ref={(el) => {
                       if (itemIndex >= 0) itemsRef.current[itemIndex] = el
                     }}

@@ -33,7 +33,7 @@ interface WindowWithIdleCallback extends Window {
 }
 
 interface HydrationOptimizerProps {
-  children: React.ReactNode;
+  readonly children: React.ReactNode;
 }
 
 /**
@@ -44,9 +44,9 @@ export function useIdleHydration() {
   const [isHydrated, setIsHydrated] = useState(false);
 
   useEffect(() => {
-    if (typeof window === 'undefined') return;
+    if (globalThis === undefined) return;
 
-    const win = window as WindowWithIdleCallback;
+    const win = globalThis as unknown as WindowWithIdleCallback;
 
     // Use requestIdleCallback if available, fallback to setTimeout
     if ('requestIdleCallback' in win) {
@@ -83,7 +83,7 @@ export function useDeferredEventListener(
   useEffect(() => {
     if (!target) return;
 
-    const win = window as WindowWithIdleCallback;
+    const win = globalThis as unknown as WindowWithIdleCallback;
 
     if ('requestIdleCallback' in win) {
       const id = win.requestIdleCallback(() => {

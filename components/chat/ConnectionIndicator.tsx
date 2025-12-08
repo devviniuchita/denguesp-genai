@@ -8,9 +8,9 @@ import { AlertCircle, Wifi, WifiOff } from "lucide-react"
 export type ConnectionStatus = "connected" | "disconnected" | "reconnecting" | "error"
 
 interface ConnectionIndicatorProps {
-  status: ConnectionStatus
-  onRetry?: () => void
-  className?: string
+  readonly status: ConnectionStatus
+  readonly onRetry?: () => void
+  readonly className?: string
 }
 
 export function ConnectionIndicator({

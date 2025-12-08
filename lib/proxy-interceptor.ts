@@ -9,94 +9,155 @@ interface ExtendedXMLHttpRequest extends XMLHttpRequest {
   _proxyUrl?: string;
 }
 
-if (typeof window !== 'undefined') {
-  const originalFetch = window.fetch;
+const TACTIQ_DOMAIN = 'ffp.tactiq.io';
 
-  window.fetch = async function (input: RequestInfo | URL, init?: RequestInit): Promise<Response> {
-    // Extrair URL de diferentes tipos de input
-    let url: string;
-    if (typeof input === 'string') {
-      url = input;
-    } else if (input instanceof URL) {
-      url = input.href;
-    } else if (input instanceof Request) {
-      url = input.url;
-    } else {
-      // Fallback para outros tipos
-      url = String(input);
+/**
+ * Extrai URL como string de diferentes tipos de input
+ */
+function extractUrlString(input: RequestInfo | URL): string {
+  if (typeof input === 'string') {
+    return input;
+  }
+  if (input instanceof URL) {
+    return input.href;
+  }
+  if (input instanceof Request) {
+    return input.url;
+  }
+  return String(input);
+}
+
+/**
+ * Verifica se a URL deve ser interceptada
+ */
+function shouldIntercept(url: string): boolean {
+  return url?.includes(TACTIQ_DOMAIN) ?? false;
+}
+
+/**
+ * Converte URL original para URL do proxy local
+ */
+function buildProxyUrl(originalUrlString: string): string {
+  const originalUrl = new URL(originalUrlString);
+  const path = originalUrl.pathname;
+  const searchParams = originalUrl.search;
+  const proxyPath = path.startsWith('/') ? path.slice(1) : path;
+  return `/api/proxy/tactiq/${proxyPath}${searchParams}`;
+}
+
+/**
+ * Copia headers de diferentes fontes para um Headers unificado
+ */
+function mergeHeaders(
+  input: RequestInfo | URL,
+  init?: RequestInit
+): Headers {
+  const mergedHeaders = new Headers();
+
+  // Copiar headers do Request original
+  if (input instanceof Request) {
+    for (const [key, value] of input.headers.entries()) {
+      mergedHeaders.set(key, value);
+    }
+  }
+
+  // Sobrescrever com headers de init
+  if (init?.headers) {
+    copyHeadersFromInit(init.headers, mergedHeaders);
+  }
+
+  return mergedHeaders;
+}
+
+/**
+ * Copia headers de init para o objeto Headers destino
+ */
+function copyHeadersFromInit(
+  source: HeadersInit,
+  destination: Headers
+): void {
+  if (source instanceof Headers) {
+    for (const [key, value] of source.entries()) {
+      destination.set(key, value);
+    }
+  } else if (Array.isArray(source)) {
+    for (const [key, value] of source) {
+      destination.set(key, value);
+    }
+  } else {
+    for (const [key, value] of Object.entries(source)) {
+      destination.set(key, value);
+    }
+  }
+}
+
+/**
+ * Extrai valor de propriedade do Request ou init
+ */
+function getRequestProp<K extends keyof RequestInit>(
+  input: RequestInfo | URL,
+  init: RequestInit | undefined,
+  prop: K
+): RequestInit[K] {
+  if (input instanceof Request) {
+    return input[prop as keyof Request] as RequestInit[K];
+  }
+  return init?.[prop];
+}
+
+/**
+ * Cria as opções de requisição para o proxy
+ */
+function buildProxyRequestInit(
+  input: RequestInfo | URL,
+  init: RequestInit | undefined,
+  mergedHeaders: Headers,
+  originalUrl: string
+): RequestInit {
+  mergedHeaders.set('X-Original-URL', originalUrl);
+
+  return {
+    method: getRequestProp(input, init, 'method') ?? 'GET',
+    headers: mergedHeaders,
+    body: getRequestProp(input, init, 'body'),
+    credentials: getRequestProp(input, init, 'credentials'),
+    cache: getRequestProp(input, init, 'cache'),
+    redirect: getRequestProp(input, init, 'redirect'),
+    referrer: getRequestProp(input, init, 'referrer'),
+    referrerPolicy: getRequestProp(input, init, 'referrerPolicy'),
+    mode: getRequestProp(input, init, 'mode'),
+    signal: init?.signal,
+  };
+}
+
+if (globalThis?.fetch) {
+  const originalFetch = globalThis.fetch;
+
+  globalThis.fetch = async function (
+    input: RequestInfo | URL,
+    init?: RequestInit
+  ): Promise<Response> {
+    const url = extractUrlString(input);
+
+    if (!shouldIntercept(url)) {
+      return originalFetch(input, init);
     }
 
-    // Verificar se a requisição é para ffp.tactiq.io
-    if (url && url.includes('ffp.tactiq.io')) {
-      // Extrair o path e query params da URL original
-      try {
-        const originalUrl = new URL(url);
-        // Extrair o path completo (ex: /proxy ou /proxy/client/metrics)
-        const path = originalUrl.pathname;
-        const searchParams = originalUrl.search;
+    try {
+      const proxyUrl = buildProxyUrl(url);
+      console.log(`[Proxy Interceptor] Redirecting ${url} to ${proxyUrl}`);
 
-        // Construir nova URL para o proxy local
-        // Manter o path completo removendo apenas a barra inicial
-        const proxyPath = path.startsWith('/') ? path.slice(1) : path;
-        const proxyUrl = `/api/proxy/tactiq/${proxyPath}${searchParams}`;
+      const mergedHeaders = mergeHeaders(input, init);
+      const proxyInit = buildProxyRequestInit(input, init, mergedHeaders, url);
 
-        console.log(`[Proxy Interceptor] Redirecting ${url} to ${proxyUrl}`);
-
-        // Preparar headers combinando init e headers do Request original
-        const mergedHeaders = new Headers();
-
-        // Se input é um Request, copiar seus headers
-        if (input instanceof Request) {
-          input.headers.forEach((value, key) => {
-            mergedHeaders.set(key, value);
-          });
-        }
-
-        // Sobrescrever com headers de init se existirem
-        if (init?.headers) {
-          if (init.headers instanceof Headers) {
-            init.headers.forEach((value, key) => {
-              mergedHeaders.set(key, value);
-            });
-          } else if (Array.isArray(init.headers)) {
-            init.headers.forEach(([key, value]) => {
-              mergedHeaders.set(key, value);
-            });
-          } else {
-            Object.entries(init.headers).forEach(([key, value]) => {
-              mergedHeaders.set(key, value);
-            });
-          }
-        }
-
-        // Adicionar header com URL original
-        mergedHeaders.set('X-Original-URL', url);
-
-        // Fazer requisição para o proxy local
-        return originalFetch(proxyUrl, {
-          method: input instanceof Request ? input.method : init?.method || 'GET',
-          headers: mergedHeaders,
-          body: input instanceof Request ? input.body : init?.body,
-          credentials: input instanceof Request ? input.credentials : init?.credentials,
-          cache: input instanceof Request ? input.cache : init?.cache,
-          redirect: input instanceof Request ? input.redirect : init?.redirect,
-          referrer: input instanceof Request ? input.referrer : init?.referrer,
-          referrerPolicy: input instanceof Request ? input.referrerPolicy : init?.referrerPolicy,
-          mode: input instanceof Request ? input.mode : init?.mode,
-          signal: init?.signal,
-        });
-      } catch (error) {
-        console.error('[Proxy Interceptor] Error intercepting request:', error);
-        // Se houver erro, fazer requisição original
-        return originalFetch(input, init);
-      }
+      return originalFetch(proxyUrl, proxyInit);
+    } catch (error) {
+      console.error('[Proxy Interceptor] Error intercepting request:', error);
+      return originalFetch(input, init);
     }
-
-    // Para outras URLs, usar fetch original
-    return originalFetch(input, init);
   };
 
-  // Também interceptar XMLHttpRequest se necessário
+  // Interceptar XMLHttpRequest
   const originalXHROpen = XMLHttpRequest.prototype.open;
   const originalXHRSend = XMLHttpRequest.prototype.send;
 
@@ -107,57 +168,36 @@ if (typeof window !== 'undefined') {
     username?: string | null,
     password?: string | null
   ) {
-    const urlString = typeof url === 'string' ? url : url.href;
+    const urlString = url instanceof URL ? url.href : url;
+    const asyncValue = async ?? true;
 
-    if (urlString.includes('ffp.tactiq.io')) {
+    if (shouldIntercept(urlString)) {
       try {
-        const originalUrl = new URL(urlString);
-        const path = originalUrl.pathname;
-        const searchParams = originalUrl.search;
-        const proxyPath = path.startsWith('/') ? path.slice(1) : path;
-        const proxyUrl = `/api/proxy/tactiq/${proxyPath}${searchParams}`;
-
+        const proxyUrl = buildProxyUrl(urlString);
         console.log(`[Proxy Interceptor] XHR Redirecting ${urlString} to ${proxyUrl}`);
 
-        // Armazenar URL original para uso no send
         const extThis = this as ExtendedXMLHttpRequest;
         extThis._originalUrl = urlString;
         extThis._proxyUrl = proxyUrl;
 
-        return originalXHROpen.call(
-          this,
-          method,
-          proxyUrl,
-          async !== undefined ? async : true,
-          username,
-          password
-        );
+        return originalXHROpen.call(this, method, proxyUrl, asyncValue, username, password);
       } catch (error) {
         console.error('[Proxy Interceptor] Error intercepting XHR:', error);
       }
     }
 
-    return originalXHROpen.call(
-      this,
-      method,
-      urlString,
-      async !== undefined ? async : true,
-      username,
-      password
-    );
+    return originalXHROpen.call(this, method, urlString, asyncValue, username, password);
   };
 
   XMLHttpRequest.prototype.send = function (body?: Document | XMLHttpRequestBodyInit | null) {
-    // Adicionar header com URL original se existir
     const extThis = this as ExtendedXMLHttpRequest;
     if (extThis._originalUrl) {
       this.setRequestHeader('X-Original-URL', extThis._originalUrl);
     }
-
     return originalXHRSend.call(this, body);
   };
 
   console.log('[Proxy Interceptor] Initialized - intercepting requests to ffp.tactiq.io');
 }
 
-export { };
+export { buildProxyUrl, shouldIntercept };

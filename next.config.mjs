@@ -11,6 +11,10 @@ const nextConfig = {
   reactCompiler: true,
   productionBrowserSourceMaps: false,
   excludeDefaultMomentLocales: true,
+  // Fix turbopack workspace root warning
+  turbopack: {
+    root: process.cwd(),
+  },
   experimental: {
     optimizeCss: true,
     // Tree shake large packages - only load what's actually used

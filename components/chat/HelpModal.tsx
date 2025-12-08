@@ -7,8 +7,8 @@ import { Copy, Edit, Keyboard, MessageSquare, Search, Trash2, X } from "lucide-r
 import * as React from "react"
 
 interface HelpModalProps {
-  open: boolean
-  onClose: () => void
+  readonly open: boolean
+  readonly onClose: () => void
 }
 
 interface Shortcut {
@@ -139,14 +139,15 @@ export function HelpModal({ open, onClose }: HelpModalProps) {
                   Atalhos de Teclado
                 </h3>
                 <div className="grid gap-3">
-                  {shortcuts.map((shortcut, index) => {
+                  {shortcuts.map((shortcut) => {
                     const Icon = shortcut.icon
+                    const keyId = shortcut.keys.join('-')
                     return (
                       <motion.div
-                        key={index}
+                        key={keyId}
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: index * 0.05 }}
+                        transition={{ delay: shortcuts.indexOf(shortcut) * 0.05 }}
                         className="flex items-center justify-between p-3 rounded-lg bg-gray-50 dark:bg-[#111B21] border border-gray-200 dark:border-gray-700"
                       >
                         <div className="flex items-center gap-3">
@@ -158,12 +159,12 @@ export function HelpModal({ open, onClose }: HelpModalProps) {
                           </span>
                         </div>
                         <div className="flex items-center gap-1">
-                          {shortcut.keys.map((key, keyIndex) => (
-                            <React.Fragment key={keyIndex}>
+                          {shortcut.keys.map((key) => (
+                            <React.Fragment key={key}>
                               <kbd className="px-2 py-1 text-xs font-semibold text-gray-700 dark:text-gray-300 bg-white dark:bg-[#202C33] border border-gray-300 dark:border-gray-600 rounded shadow-sm">
                                 {key}
                               </kbd>
-                              {keyIndex < shortcut.keys.length - 1 && (
+                              {shortcut.keys.indexOf(key) < shortcut.keys.length - 1 && (
                                 <span className="text-gray-400 mx-1">+</span>
                               )}
                             </React.Fragment>
@@ -181,14 +182,15 @@ export function HelpModal({ open, onClose }: HelpModalProps) {
                   Ações de Mensagem
                 </h3>
                 <div className="grid gap-3">
-                  {messageActions.map((action, index) => {
+                  {messageActions.map((action) => {
                     const Icon = action.icon
+                    const actionId = action.keys.join('-')
                     return (
                       <motion.div
-                        key={index}
+                        key={actionId}
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: (shortcuts.length + index) * 0.05 }}
+                        transition={{ delay: (shortcuts.length + messageActions.indexOf(action)) * 0.05 }}
                         className="flex items-center gap-3 p-3 rounded-lg bg-gray-50 dark:bg-[#111B21] border border-gray-200 dark:border-gray-700"
                       >
                         {Icon && (

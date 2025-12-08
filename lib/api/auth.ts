@@ -22,7 +22,8 @@ export async function login(credentials: LoginCredentials): Promise<AuthResponse
     }
 
     return data;
-  } catch (_error) {
+  } catch (error) {
+    console.error('Login error:', error);
     return {
       success: false,
       error: 'Erro de conexão. Verifique sua internet.',
@@ -53,7 +54,8 @@ export async function register(credentials: RegisterCredentials): Promise<AuthRe
     }
 
     return data;
-  } catch (_error) {
+  } catch (error) {
+    console.error('Register error:', error);
     return {
       success: false,
       error: 'Erro de conexão. Verifique sua internet.',

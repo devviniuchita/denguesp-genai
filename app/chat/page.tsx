@@ -14,6 +14,34 @@ import { Chat, Message } from "@/types/chat";
 import dynamic from "next/dynamic";
 import * as React from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
+
+// Helper functions to update message status - extracted to reduce nesting
+function updateMessageStatus(
+  messages: Message[],
+  messageId: string,
+  status: Message['status']
+): Message[] {
+  return messages.map((msg) =>
+    msg.id === messageId ? { ...msg, status } : msg
+  );
+}
+
+function updateMessageContent(
+  messages: Message[],
+  messageId: string,
+  newContent: string
+): Message[] {
+  return messages.map((msg) =>
+    msg.id === messageId
+      ? { ...msg, content: newContent, editedAt: new Date().toISOString() }
+      : msg
+  );
+}
+
+function filterOutMessage(messages: Message[], messageId: string): Message[] {
+  return messages.filter((msg) => msg.id !== messageId);
+}
+
 const HelpModal = dynamic(
   () => import("@/components/chat/HelpModal").then((m) => m.HelpModal),
   {
@@ -137,9 +165,12 @@ export default function Home() {
     async (content: string) => {
       if (!currentChat) return;
 
+      const messageId = `user-${Date.now()}`;
+      const aiMessageId = `ai-${Date.now() + 1}`;
+
       // Create user message
       const userMessage: Message = {
-        id: `user-${Date.now()}`,
+        id: messageId,
         chatId: currentChat.id,
         userId: "user-123",
         content,
@@ -150,30 +181,21 @@ export default function Home() {
 
       setMessages((prev) => [...prev, userMessage]);
 
-      // Simulate sending
+      // Schedule status updates
       setTimeout(() => {
-        setMessages((prev) =>
-          prev.map((msg) =>
-            msg.id === userMessage.id ? { ...msg, status: "sent" } : msg,
-          ),
-        );
-      }, 1500);
-
-      // Simulate delivered status
-      setTimeout(() => {
-        setMessages((prev) =>
-          prev.map((msg) =>
-            msg.id === userMessage.id ? { ...msg, status: "delivered" } : msg,
-          ),
-        );
+        setMessages((prev) => updateMessageStatus(prev, messageId, "delivered"));
       }, 1000);
 
-      // Simulate AI response
+      setTimeout(() => {
+        setMessages((prev) => updateMessageStatus(prev, messageId, "sent"));
+      }, 1500);
+
+      // Schedule AI response
       setIsTyping(true);
       setTimeout(() => {
         setIsTyping(false);
         const aiMessage: Message = {
-          id: `ai-${Date.now()}`,
+          id: aiMessageId,
           chatId: currentChat.id,
           userId: "ai-assistant",
           content:
@@ -182,16 +204,12 @@ export default function Home() {
           timestamp: new Date().toISOString(),
         };
         setMessages((prev) => [...prev, aiMessage]);
-
-        // Mark user message as read when AI responds
-        setTimeout(() => {
-          setMessages((prev) =>
-            prev.map((msg) =>
-              msg.id === userMessage.id ? { ...msg, status: "read" } : msg,
-            ),
-          );
-        }, 500);
       }, 2000);
+
+      // Schedule read status after AI response
+      setTimeout(() => {
+        setMessages((prev) => updateMessageStatus(prev, messageId, "read"));
+      }, 2500);
     },
     [currentChat],
   );
@@ -215,17 +233,7 @@ export default function Home() {
 
   const handleEditMessage = useCallback(
     (messageId: string, newContent: string) => {
-      setMessages((prev) =>
-        prev.map((msg) =>
-          msg.id === messageId
-            ? {
-                ...msg,
-                content: newContent,
-                editedAt: new Date().toISOString(),
-              }
-            : msg,
-        ),
-      );
+      setMessages((prev) => updateMessageContent(prev, messageId, newContent));
       addToast({
         type: "success",
         description: "Mensagem editada com sucesso",
@@ -240,10 +248,9 @@ export default function Home() {
   }, []);
 
   const confirmDeleteMessage = useCallback(() => {
-    if (deleteConfirm.messageId) {
-      setMessages((prev) =>
-        prev.filter((msg) => msg.id !== deleteConfirm.messageId),
-      );
+    const messageId = deleteConfirm.messageId;
+    if (messageId) {
+      setMessages((prev) => filterOutMessage(prev, messageId));
       setDeleteConfirm({ open: false, messageId: null });
       addToast({
         type: "success",

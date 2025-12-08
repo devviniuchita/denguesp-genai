@@ -7,12 +7,11 @@ import { Copy, Edit, Trash2 } from "lucide-react"
 import * as React from "react"
 
 interface MessageContextMenuProps {
-  messageId: string
-  onCopy?: () => void
-  onEdit?: () => void
-  onDelete?: () => void
-  position: { x: number; y: number }
-  onClose: () => void
+  readonly onCopy?: () => void
+  readonly onEdit?: () => void
+  readonly onDelete?: () => void
+  readonly position: { x: number; y: number }
+  readonly onClose: () => void
 }
 
 export function MessageContextMenu({
