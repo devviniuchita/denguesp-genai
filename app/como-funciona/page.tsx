@@ -1,16 +1,17 @@
 import { InitiateChatButton } from "@/app/(home)/components/InitiateChatButton";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 import {
-  Activity,
-  ArrowLeft,
-  Bot,
-  Brain,
-  Database,
-  FileText,
-  MessageCircle,
-  Shield,
-  Sparkles,
-  TrendingUp,
-  Users,
+    Activity,
+    ArrowLeft,
+    Bot,
+    Brain,
+    Database,
+    FileText,
+    MessageCircle,
+    Shield,
+    Sparkles,
+    TrendingUp,
+    Users,
 } from "lucide-react";
 import { Metadata } from "next";
 import Link from "next/link";
@@ -31,7 +32,7 @@ export default function ComoFuncionaPage() {
     <div className="min-h-screen bg-background">
       {/* Header */}
       <header className="border-b bg-background/50 backdrop-blur-sm sticky top-0 z-40 transition-all duration-300">
-        <div className="container mx-auto px-6 py-4">
+        <div className="container mx-auto px-6 py-4 flex items-center justify-between">
           <Link
             href="/"
             className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-primary rounded-md px-2 py-1"
@@ -40,6 +41,7 @@ export default function ComoFuncionaPage() {
             <ArrowLeft className="h-4 w-4" />
             Voltar
           </Link>
+          <ThemeToggle />
         </div>
       </header>
 
