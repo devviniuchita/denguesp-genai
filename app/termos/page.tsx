@@ -155,16 +155,68 @@ export default function TermosPage() {
         </div>
 
         {/* Contact Section */}
-        <div className="mt-12 p-6 bg-muted/50 rounded-lg border text-center">
-          <p className="text-sm text-muted-foreground mb-3">
+        <div className="mt-12 p-6 bg-muted/50 rounded-lg border">
+          <p className="text-sm font-medium text-foreground mb-4 text-center">
             Dúvidas ou preocupações sobre estes Termos?
           </p>
-          <p className="text-sm font-medium">
-            Entre em contato:{" "}
-            <a href="mailto:funcaosocial@prefeitura.sp.gov.br" className="text-primary hover:underline">
-              funcaosocial@prefeitura.sp.gov.br
-            </a>
+          <p className="text-sm text-muted-foreground mb-4 text-center">
+            Entre em contato com os órgãos oficiais competentes:
           </p>
+
+          <div className="space-y-3">
+            {/* Procon-SP */}
+            <div className="flex flex-wrap items-center justify-center gap-2 text-sm">
+              <span className="font-medium">Procon-SP (Defesa do Consumidor):</span>
+              <a
+                href="https://www.procon.sp.gov.br/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary hover:underline"
+              >
+                procon.sp.gov.br
+              </a>
+              <span className="text-muted-foreground">| Tel: 151</span>
+            </div>
+
+            {/* LGPD - ANPD */}
+            <div className="flex flex-wrap items-center justify-center gap-2 text-sm">
+              <span className="font-medium">ANPD (Autoridade de Proteção de Dados):</span>
+              <a
+                href="https://www.gov.br/anpd/pt-br"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary hover:underline"
+              >
+                gov.br/anpd
+              </a>
+            </div>
+
+            {/* Código de Defesa do Consumidor */}
+            <div className="flex flex-wrap items-center justify-center gap-2 text-sm">
+              <span className="font-medium">Código de Defesa do Consumidor:</span>
+              <a
+                href="http://www.planalto.gov.br/ccivil_03/leis/l8078compilado.htm"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary hover:underline"
+              >
+                Lei nº 8.078/1990
+              </a>
+            </div>
+
+            {/* Marco Civil da Internet */}
+            <div className="flex flex-wrap items-center justify-center gap-2 text-sm">
+              <span className="font-medium">Marco Civil da Internet:</span>
+              <a
+                href="http://www.planalto.gov.br/ccivil_03/_ato2011-2014/2014/lei/l12965.htm"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary hover:underline"
+              >
+                Lei nº 12.965/2014
+              </a>
+            </div>
+          </div>
         </div>
       </main>
 

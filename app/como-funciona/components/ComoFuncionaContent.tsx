@@ -132,42 +132,119 @@ export function ComoFuncionaContent() {
             </motion.p>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {[
-                {
-                  icon: Activity,
-                  text: "Dados oficiais da API InfoDengue (Fiocruz + FGV), focados na cidade de São Paulo.",
-                },
-                {
-                  icon: Brain,
-                  text: "IA Generativa (Gemini 2.5 Flash) treinada para responder apenas sobre dengue, com regras rígidas.",
-                },
-                {
-                  icon: FileText,
-                  text: "Base educativa com orientações oficiais do Ministério da Saúde e OMS/OPAS.",
-                },
-                {
-                  icon: Database,
-                  text: "Arquitetura RAG de dupla camada (dados epidemiológicos + conteúdo educativo).",
-                },
-                {
-                  icon: Shield,
-                  text: "Guardrails de segurança que impedem o sistema de sair do tema ou dar diagnósticos.",
-                },
-              ].map((item) => (
-                <motion.div
-                  key={item.text}
-                  variants={itemVariants}
-                  whileHover={{ scale: 1.05, y: -5 }}
-                  className="flex flex-col gap-4 p-5 bg-background/50 dark:bg-black/20 rounded-2xl border border-border/50 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10 transition-all duration-300"
-                >
-                  <div className="p-2.5 bg-primary/10 w-fit rounded-lg">
-                    <item.icon className="h-5 w-5 text-primary" />
-                  </div>
-                  <p className="text-sm font-medium leading-relaxed">
-                    {item.text}
-                  </p>
-                </motion.div>
-              ))}
+              {/* InfoDengue */}
+              <motion.div
+                variants={itemVariants}
+                whileHover={{ scale: 1.05, y: -5 }}
+                className="flex flex-col gap-4 p-5 bg-background/50 dark:bg-black/20 rounded-2xl border border-border/50 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10 transition-all duration-300"
+              >
+                <div className="p-2.5 bg-primary/10 w-fit rounded-lg">
+                  <Activity className="h-5 w-5 text-primary" />
+                </div>
+                <p className="text-sm font-medium leading-relaxed">
+                  Dados oficiais da{" "}
+                  <a
+                    href="https://info.dengue.mat.br/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-primary hover:underline font-semibold"
+                  >
+                    API InfoDengue
+                  </a>{" "}
+                  (Fiocruz + FGV), focados na cidade de São Paulo.
+                </p>
+              </motion.div>
+
+              {/* Gemini */}
+              <motion.div
+                variants={itemVariants}
+                whileHover={{ scale: 1.05, y: -5 }}
+                className="flex flex-col gap-4 p-5 bg-background/50 dark:bg-black/20 rounded-2xl border border-border/50 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10 transition-all duration-300"
+              >
+                <div className="p-2.5 bg-primary/10 w-fit rounded-lg">
+                  <Brain className="h-5 w-5 text-primary" />
+                </div>
+                <p className="text-sm font-medium leading-relaxed">
+                  IA Generativa (Gemini 2.5 Flash) treinada para responder apenas sobre dengue, com{" "}
+                  <a
+                    href="https://gemini.google/br/policy-guidelines/?hl=pt-BR"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-primary hover:underline font-semibold"
+                  >
+                    regras rígidas
+                  </a>
+                  .
+                </p>
+              </motion.div>
+
+              {/* OMS/OPAS */}
+              <motion.div
+                variants={itemVariants}
+                whileHover={{ scale: 1.05, y: -5 }}
+                className="flex flex-col gap-4 p-5 bg-background/50 dark:bg-black/20 rounded-2xl border border-border/50 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10 transition-all duration-300"
+              >
+                <div className="p-2.5 bg-primary/10 w-fit rounded-lg">
+                  <FileText className="h-5 w-5 text-primary" />
+                </div>
+                <p className="text-sm font-medium leading-relaxed">
+                  Base educativa com orientações oficiais do Ministério da Saúde e{" "}
+                  <a
+                    href="https://www.who.int/health-topics/dengue-and-severe-dengue"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-primary hover:underline font-semibold"
+                  >
+                    OMS/OPAS
+                  </a>
+                  .
+                </p>
+              </motion.div>
+
+              {/* RAG */}
+              <motion.div
+                variants={itemVariants}
+                whileHover={{ scale: 1.05, y: -5 }}
+                className="flex flex-col gap-4 p-5 bg-background/50 dark:bg-black/20 rounded-2xl border border-border/50 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10 transition-all duration-300"
+              >
+                <div className="p-2.5 bg-primary/10 w-fit rounded-lg">
+                  <Database className="h-5 w-5 text-primary" />
+                </div>
+                <p className="text-sm font-medium leading-relaxed">
+                  Arquitetura{" "}
+                  <a
+                    href="https://cloud.google.com/use-cases/retrieval-augmented-generation?hl=pt-BR"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-primary hover:underline font-semibold"
+                  >
+                    RAG
+                  </a>{" "}
+                  de dupla camada (dados epidemiológicos + conteúdo educativo).
+                </p>
+              </motion.div>
+
+              {/* Guardrails */}
+              <motion.div
+                variants={itemVariants}
+                whileHover={{ scale: 1.05, y: -5 }}
+                className="flex flex-col gap-4 p-5 bg-background/50 dark:bg-black/20 rounded-2xl border border-border/50 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/10 transition-all duration-300"
+              >
+                <div className="p-2.5 bg-primary/10 w-fit rounded-lg">
+                  <Shield className="h-5 w-5 text-primary" />
+                </div>
+                <p className="text-sm font-medium leading-relaxed">
+                  <a
+                    href="https://blog.dsacademy.com.br/guardrails-em-ia-generativa-seguranca-e-qualidade-em-modelos-de-linguagem/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-primary hover:underline font-semibold"
+                  >
+                    Guardrails
+                  </a>{" "}
+                  de segurança que impedem o sistema de sair do tema ou dar diagnósticos.
+                </p>
+              </motion.div>
             </div>
 
             <motion.p variants={itemVariants} className="mt-8 text-lg font-medium text-center text-primary">
