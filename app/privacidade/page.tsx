@@ -106,7 +106,7 @@ export default function PrivacidadePage() {
         </div>
 
         {/* Content Sections */}
-        <div className="space-y-8" role="region" aria-label="Conteúdo das políticas de privacidade">
+        <section className="space-y-8" aria-label="Conteúdo das políticas de privacidade">
           {privacyData.map((section, index) => (
             <section
               key={section.id}
@@ -128,7 +128,7 @@ export default function PrivacidadePage() {
               </div>
             </section>
           ))}
-        </div>
+        </section>
 
         {/* LGPD/GDPR Compliance Section */}
         <div className="mt-12 p-6 bg-green-50 dark:bg-green-950/20 border border-green-200 dark:border-green-800 rounded-lg transition-all duration-300 hover:shadow-sm">
@@ -138,31 +138,108 @@ export default function PrivacidadePage() {
               Conformidade LGPD & GDPR
             </h3>
           </div>
-          <p className="text-sm text-green-800 dark:text-green-200 leading-relaxed">
+          <p className="text-sm text-green-800 dark:text-green-200 leading-relaxed mb-3">
             Estamos em conformidade com a Lei Geral de Proteção de Dados (LGPD - Brasil) e o Regulamento Geral de Proteção de Dados (GDPR - Europa). Seus direitos e privacidade são nossa prioridade. Para questões de privacidade, entre em contato com nosso Encarregado de Proteção de Dados (DPO).
+          </p>
+          <p className="text-sm text-green-800 dark:text-green-200">
+            Para mais informações:{" "}
+            <a
+              href="https://www.gov.br/esporte/pt-br/acesso-a-informacao/lgpd"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-green-700 dark:text-green-300 font-medium underline hover:text-green-600 dark:hover:text-green-100 transition-colors"
+            >
+              LGPD - Portal Gov.br
+            </a>
+            {" | "}
+            <a
+              href="https://gdpr.eu/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-green-700 dark:text-green-300 font-medium underline hover:text-green-600 dark:hover:text-green-100 transition-colors"
+            >
+              GDPR - Regulamento Europeu
+            </a>
           </p>
         </div>
 
-        {/* DPO Contact Section */}
+        {/* Dúvidas e Fontes de Dados */}
         <div className="mt-8 p-6 bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800 rounded-lg transition-all duration-300 hover:shadow-sm">
-          <div className="flex items-start gap-3 mb-3">
+          <div className="flex items-start gap-3 mb-4">
             <Mail className="h-5 w-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" aria-hidden="true" />
             <h3 className="text-sm font-semibold text-blue-900 dark:text-blue-100 uppercase tracking-wide">
-              Encarregado de Proteção de Dados (DPO)
+              Dúvidas e Fontes de Dados
             </h3>
           </div>
-          <p className="text-sm text-blue-800 dark:text-blue-200 leading-relaxed mb-3">
-            Para questões relacionadas à proteção de dados e privacidade, entre em contato com nosso DPO:
+          <p className="text-sm text-blue-800 dark:text-blue-200 leading-relaxed mb-4">
+            Para dúvidas sobre dengue, notificações e informações de saúde, entre em contato com os órgãos oficiais:
           </p>
-          <div className="flex items-center gap-2">
-            <span className="text-sm font-medium text-blue-900 dark:text-blue-100">Email:</span>
-            <a
-              href="mailto:funcaosocial@prefeitura.sp.gov.br"
-              className="text-primary hover:underline focus:outline-none focus:ring-2 focus:ring-primary rounded-md px-1"
-              title="Enviar email para o DPO"
-            >
-              funcaosocial@prefeitura.sp.gov.br
-            </a>
+
+          <div className="space-y-3">
+            {/* Secretaria Municipal */}
+            <div className="flex flex-wrap items-center gap-2 text-sm">
+              <span className="font-medium text-blue-900 dark:text-blue-100">Secretaria Municipal de Saúde de SP:</span>
+              <a
+                href="https://www.prefeitura.sp.gov.br/cidade/secretarias/saude/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary hover:underline"
+              >
+                prefeitura.sp.gov.br
+              </a>
+            </div>
+
+            {/* Secretaria Estadual */}
+            <div className="flex flex-wrap items-center gap-2 text-sm">
+              <span className="font-medium text-blue-900 dark:text-blue-100">Secretaria Estadual de Saúde (CVE):</span>
+              <a
+                href="https://www.saude.sp.gov.br/cve-centro-de-vigilancia-epidemiologica-prof.-alexandre-vranjac"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary hover:underline"
+              >
+                saude.sp.gov.br/cve
+              </a>
+            </div>
+
+            {/* Notificações */}
+            <div className="flex flex-wrap items-center gap-2 text-sm">
+              <span className="font-medium text-blue-900 dark:text-blue-100">Notificações epidemiológicas:</span>
+              <a
+                href="mailto:notifica@saude.sp.gov.br"
+                className="text-primary hover:underline"
+              >
+                notifica@saude.sp.gov.br
+              </a>
+            </div>
+
+            {/* Ministério da Saúde */}
+            <div className="flex flex-wrap items-center gap-2 text-sm">
+              <span className="font-medium text-blue-900 dark:text-blue-100">Ministério da Saúde:</span>
+              <a
+                href="https://www.gov.br/saude/pt-br"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary hover:underline"
+              >
+                gov.br/saude
+              </a>
+            </div>
+          </div>
+
+          {/* Fonte de Dados */}
+          <div className="mt-4 pt-4 border-t border-blue-200 dark:border-blue-700">
+            <p className="text-sm text-blue-800 dark:text-blue-200">
+              <span className="font-medium text-blue-900 dark:text-blue-100">Dados epidemiológicos obtidos através da API:</span>{" "}
+              <a
+                href="https://info.dengue.mat.br/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-primary hover:underline font-medium"
+              >
+                Info Dengue (info.dengue.mat.br)
+              </a>
+            </p>
           </div>
         </div>
 
