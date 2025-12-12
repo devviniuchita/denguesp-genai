@@ -168,12 +168,28 @@ export default function TermosPage() {
         </div>
       </main>
 
-      {/* Footer CTA */}
-      <footer className="border-t bg-background/50 mt-16">
+      {/* Footer */}
+      <footer className="border-t bg-background/50 backdrop-blur-sm mt-16">
         <div className="container mx-auto px-6 py-8">
-          <p className="text-center text-sm text-muted-foreground">
-            © 2025 DengueSP-Gen. Todos os direitos reservados.
-          </p>
+          <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+            <Link href='/' className='flex items-center gap-2 hover:opacity-80 transition-opacity'>
+              <div className='h-6 w-6 rounded bg-primary/20 flex items-center justify-center'>
+                <span className='text-xs font-bold text-primary'>D</span>
+              </div>
+              <span className='font-semibold'>DengueSP-Gen</span>
+            </Link>
+            <p className="text-sm text-muted-foreground">
+              © 2025 DengueSP-Gen. Todos os direitos reservados.
+            </p>
+            <div className="flex gap-6 text-sm text-muted-foreground">
+              <Link href='/privacidade' className='hover:text-foreground transition-colors'>
+                Privacidade
+              </Link>
+              <Link href='/termos' className='hover:text-foreground transition-colors'>
+                Termos
+              </Link>
+            </div>
+          </div>
         </div>
       </footer>
     </div>

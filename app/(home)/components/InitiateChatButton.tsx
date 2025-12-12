@@ -32,14 +32,14 @@ export function InitiateChatButton() {
   // If authenticated, navigate to /chat
   if (isAuthenticated) {
     return (
-      <Link href="/chat" className="w-full sm:w-auto">
+      <Link href="/chat" className="w-full sm:w-auto group">
         <Button
           size="lg"
-          className="w-full sm:w-auto gap-2 text-base h-12 px-8"
+          className="w-full sm:w-auto gap-2 text-base h-12 px-8 bg-gradient-to-r from-primary to-blue-600 hover:from-primary/90 hover:to-blue-600/90 shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 transition-all duration-300 group-hover:scale-[1.02]"
           aria-label="Iniciar conversa com o assistente DengueSP-Gen"
         >
           Iniciar Conversa
-          <ArrowRight className="h-4 w-4" />
+          <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
         </Button>
       </Link>
     );
@@ -47,14 +47,14 @@ export function InitiateChatButton() {
 
   // If not authenticated, navigate to register
   return (
-    <Link href="/auth/register" className="w-full sm:w-auto">
+    <Link href="/auth/register" className="w-full sm:w-auto group">
       <Button
         size="lg"
-        className="w-full sm:w-auto gap-2 text-base h-12 px-8"
+        className="w-full sm:w-auto gap-2 text-base h-12 px-8 bg-gradient-to-r from-primary to-blue-600 hover:from-primary/90 hover:to-blue-600/90 shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 transition-all duration-300 group-hover:scale-[1.02]"
         aria-label="Criar conta e iniciar conversa com o assistente DengueSP-Gen"
       >
         Criar conta gratuita
-        <ArrowRight className="h-4 w-4" />
+        <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
       </Button>
     </Link>
   );
