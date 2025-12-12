@@ -1,10 +1,6 @@
 "use client"
-
-import * as React from "react"
-import { motion } from "framer-motion"
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,18 +9,21 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { MoreVertical, Phone, Video, Search, ArrowLeft, User, Settings, LogOut, Home } from "lucide-react"
 import { ThemeToggle } from "@/components/ui/theme-toggle"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { useAuth } from "@/contexts/AuthContext"
-import { useRouter } from "next/navigation"
 import { Chat } from "@/types/chat"
+import { motion } from "framer-motion"
+import { ArrowLeft, Home, LogOut, MoreVertical, PanelLeft, Phone, Search, Settings, User, Video } from "lucide-react"
+import { useRouter } from "next/navigation"
 import { ConnectionIndicator, ConnectionStatus } from "./ConnectionIndicator"
 
 interface ChatHeaderProps {
-  chat: Chat
-  onBack?: () => void
-  connectionStatus?: ConnectionStatus
-  onRetryConnection?: () => void
+  readonly chat: Chat
+  readonly onBack?: () => void
+  readonly connectionStatus?: ConnectionStatus
+  readonly onRetryConnection?: () => void
+  readonly onToggleSidebar?: () => void
 }
 
 const buttonVariants = {
@@ -46,6 +45,7 @@ export function ChatHeader({
   onBack,
   connectionStatus = "connected",
   onRetryConnection,
+  onToggleSidebar,
 }: ChatHeaderProps) {
   const { logout } = useAuth()
   const router = useRouter()
@@ -78,6 +78,24 @@ export function ChatHeader({
         role="banner"
       >
       <div className="flex items-center gap-3 flex-1 min-w-0">
+        {/* Toggle Sidebar Button - Desktop */}
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="hidden md:flex h-8 w-8 rounded-md text-gray-500 dark:text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-gray-300 transition-colors flex-shrink-0 opacity-70 hover:opacity-100"
+              onClick={onToggleSidebar}
+              aria-label="Alternar barra lateral"
+            >
+              <PanelLeft className="h-4 w-4" />
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>Expandir/Recolher chats</p>
+          </TooltipContent>
+        </Tooltip>
+
         {/* Home Button - Only visible on desktop */}
         <Tooltip>
           <TooltipTrigger asChild>
@@ -131,7 +149,7 @@ export function ChatHeader({
             {chat.isOnline && (
               <span className="text-xs text-green-600 dark:text-green-400 flex items-center gap-1.5 font-medium">
                 <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-                Online
+                <span>Online</span>
               </span>
             )}
             {chat.isTyping && (

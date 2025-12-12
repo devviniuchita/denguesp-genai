@@ -9,7 +9,8 @@ import {
   CHAT_SHORTCUTS,
   useKeyboardShortcuts,
 } from "@/hooks/use-keyboard-shortcuts";
-import { loadMessages, saveMessages } from "@/lib/storage/messages";
+import { useChatStorage } from "@/hooks/use-local-storage";
+import { clearMessages, generateChatTitle, loadMessages, saveMessages } from "@/lib/storage/messages";
 import { Chat, Message } from "@/types/chat";
 import dynamic from "next/dynamic";
 import * as React from "react";
@@ -65,41 +66,48 @@ const ChatWindow = dynamic(
   },
 );
 
-// Mock data - será substituído por integração com backend
-const mockChats: Chat[] = [
-  {
-    id: "ai-assistant",
-    name: "Dengue-Gen AI",
-    avatar: "/assets/branding/denguegen-icon.png",
-    lastMessage: "Olá! Como posso ajudá-lo hoje?",
-    lastMessageTime: new Date("2025-11-18T22:05:00"),
-    unreadCount: 0,
-    isOnline: true,
-  },
-];
+// Default chat - always available
+const defaultChat: Chat = {
+  id: "ai-assistant",
+  name: "Dengue-Gen AI",
+  avatar: "/assets/branding/denguegen-icon.png",
+  lastMessage: "Olá! Como posso ajudá-lo hoje?",
+  lastMessageTime: new Date(),
+  unreadCount: 0,
+  isOnline: true,
+};
+
+// Storage keys
+const CHATS_STORAGE_KEY = "dengue_chats";
+
+// Default initial message
+const getDefaultMessage = (chatId: string): Message => ({
+  id: `welcome-${chatId}`,
+  chatId,
+  userId: "ai-assistant",
+  content: "Olá! Sou a Dengue-Gen AI. Como posso ajudá-lo hoje?",
+  role: "assistant",
+  timestamp: new Date().toISOString(),
+  status: "read",
+});
 
 export default function Home() {
   const { addToast } = useToast();
   const mounted = useHasMounted();
   const messagesLoadedRef = useRef(false);
-  const [currentChat, setCurrentChat] = useState<Chat | null>(
-    mockChats[0] || null,
-  );
 
-  // Default initial message
-  const defaultMessages: Message[] = [
-    {
-      id: "1",
-      chatId: mockChats[0]?.id || "chat-1",
-      userId: "ai-assistant",
-      content: "Olá! Sou a Dengue-Gen AI. Como posso ajudá-lo hoje?",
-      role: "assistant",
-      timestamp: new Date("2025-11-18T22:05:00").toISOString(),
-      status: "read",
-    },
-  ];
+  // Dynamic chats state with localStorage persistence (prevents race condition)
+  const [chats, setChats, isChatsLoaded] = useChatStorage<Chat[]>(CHATS_STORAGE_KEY, [defaultChat]);
+  const [currentChat, setCurrentChat] = useState<Chat | null>(null);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
-  const [messages, setMessages] = useState<Message[]>(defaultMessages);
+  const toggleSidebar = useCallback(() => {
+    setIsSidebarOpen((prev) => !prev);
+  }, []);
+
+
+
+  const [messages, setMessages] = useState<Message[]>([getDefaultMessage(defaultChat.id)]);
   const [isLoading] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -111,10 +119,17 @@ export default function Home() {
   const [deleteConfirm, setDeleteConfirm] = useState<{
     open: boolean;
     messageId: string | null;
-  }>({
-    open: false,
-    messageId: null,
-  });
+    type: "message" | "chat";
+    chatId?: string;
+  }>({ open: false, messageId: null, type: "message" });
+
+  // Set current chat when chats are loaded from localStorage
+  useEffect(() => {
+    if (isChatsLoaded && chats.length > 0 && !currentChat) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setCurrentChat(chats[0]);
+    }
+  }, [isChatsLoaded, chats, currentChat]);
 
   // Check if user has completed onboarding
   useEffect(() => {
@@ -130,15 +145,17 @@ export default function Home() {
   }, []);
 
   // Load messages from localStorage on mount
-  // Using ref to track if we've loaded from storage to avoid cascading renders
   useEffect(() => {
     if (currentChat && !messagesLoadedRef.current) {
       const savedMessages = loadMessages(currentChat.id);
       if (savedMessages.length > 0) {
-        // Use flushSync-style approach via queueMicrotask to avoid direct setState in effect
         queueMicrotask(() => {
           setMessages(savedMessages);
         });
+      } else {
+        // Set default welcome message for new chat
+        // eslint-disable-next-line react-hooks/set-state-in-effect
+        setMessages([getDefaultMessage(currentChat.id)]);
       }
       messagesLoadedRef.current = true;
     }
@@ -161,6 +178,24 @@ export default function Home() {
   };
   useKeyboardShortcuts(shortcuts);
 
+  // Update chat's last message info and optionally rename
+  const updateChatLastMessage = useCallback((chatId: string, message: string, shouldRename: boolean = false) => {
+    setChats((prev) =>
+      prev.map((chat) => {
+        if (chat.id !== chatId) return chat;
+        const updates: Partial<Chat> = {
+          lastMessage: message,
+          lastMessageTime: new Date(),
+        };
+        // Rename chat based on first user message (like ChatGPT/Gemini)
+        if (shouldRename && chat.name === "Novo Chat") {
+          updates.name = generateChatTitle(message);
+        }
+        return { ...chat, ...updates };
+      })
+    );
+  }, [setChats]);
+
   const handleSendMessage = useCallback(
     async (content: string) => {
       if (!currentChat) return;
@@ -180,6 +215,8 @@ export default function Home() {
       };
 
       setMessages((prev) => [...prev, userMessage]);
+      // Rename chat on first user message (like ChatGPT)
+      updateChatLastMessage(currentChat.id, content, true);
 
       // Schedule status updates
       setTimeout(() => {
@@ -194,16 +231,17 @@ export default function Home() {
       setIsTyping(true);
       setTimeout(() => {
         setIsTyping(false);
+        const aiContent = "Esta é uma resposta de exemplo. A integração com o backend será adicionada aqui.";
         const aiMessage: Message = {
           id: aiMessageId,
           chatId: currentChat.id,
           userId: "ai-assistant",
-          content:
-            "Esta é uma resposta de exemplo. A integração com o backend será adicionada aqui.",
+          content: aiContent,
           role: "assistant",
           timestamp: new Date().toISOString(),
         };
         setMessages((prev) => [...prev, aiMessage]);
+        updateChatLastMessage(currentChat.id, aiContent);
       }, 2000);
 
       // Schedule read status after AI response
@@ -211,14 +249,110 @@ export default function Home() {
         setMessages((prev) => updateMessageStatus(prev, messageId, "read"));
       }, 2500);
     },
-    [currentChat],
+    [currentChat, updateChatLastMessage],
   );
+
+  // Create new chat
+  const handleNewChat = useCallback(() => {
+    const newChatId = `chat-${Date.now()}`;
+    const newChat: Chat = {
+      id: newChatId,
+      name: "Novo Chat",
+      avatar: "/assets/branding/denguegen-icon.png",
+      lastMessage: "Olá! Como posso ajudá-lo hoje?",
+      lastMessageTime: new Date(),
+      unreadCount: 0,
+      isOnline: true,
+    };
+
+    setChats((prev) => [newChat, ...prev]);
+    setCurrentChat(newChat);
+    messagesLoadedRef.current = false;
+    setMessages([getDefaultMessage(newChatId)]);
+    setShowChat(true);
+
+    addToast({
+      type: "success",
+      description: "Novo chat criado com sucesso!",
+    });
+  }, [addToast, setChats]);
+
+  // Rename chat
+  const handleRenameChat = useCallback((chatId: string, newName: string) => {
+    setChats((prev) =>
+      prev.map((chat) =>
+        chat.id === chatId ? { ...chat, name: newName } : chat
+      )
+    );
+    addToast({
+      type: "success",
+      description: "Chat renomeado com sucesso!",
+    });
+  }, [addToast, setChats]);
+
+  // Delete chat
+  const handleDeleteChat = useCallback((chatId: string) => {
+    setDeleteConfirm({
+      open: true,
+      messageId: null,
+      type: "chat",
+      chatId,
+    });
+  }, []);
+
+  const confirmDeleteChat = useCallback(() => {
+    const chatId = deleteConfirm.chatId;
+    if (chatId) {
+      // Remove chat from list
+      setChats((prev) => prev.filter((chat) => chat.id !== chatId));
+
+      // Clear messages from localStorage
+      clearMessages(chatId);
+
+      // If this was the current chat, switch to another or show empty
+      if (currentChat?.id === chatId) {
+        const remainingChats = chats.filter((chat) => chat.id !== chatId);
+        if (remainingChats.length > 0) {
+          setCurrentChat(remainingChats[0]);
+          messagesLoadedRef.current = false;
+        } else {
+          // Create a new default chat if no chats remain
+          const newChat: Chat = {
+            id: `chat-${Date.now()}`,
+            name: "Novo Chat",
+            avatar: "/assets/branding/denguegen-icon.png",
+            lastMessage: "Olá! Como posso ajudá-lo hoje?",
+            lastMessageTime: new Date(),
+            unreadCount: 0,
+            isOnline: true,
+          };
+          setChats([newChat]);
+          setCurrentChat(newChat);
+          messagesLoadedRef.current = false;
+          setMessages([getDefaultMessage(newChat.id)]);
+        }
+      }
+
+      setDeleteConfirm({ open: false, messageId: null, type: "message" });
+      addToast({
+        type: "success",
+        description: "Chat excluído com sucesso!",
+      });
+    }
+  }, [deleteConfirm.chatId, chats, currentChat, addToast, setChats]);
 
   const handleSelectChat = useCallback((chat: Chat) => {
     setCurrentChat(chat);
     setShowChat(true);
-    // Aqui você pode carregar mensagens do chat selecionado
-    // Exemplo: loadChatMessages(chat.id)
+    messagesLoadedRef.current = false;
+    // Load messages for selected chat
+    const savedMessages = loadMessages(chat.id);
+    if (savedMessages.length > 0) {
+      setMessages(savedMessages);
+    } else {
+      setMessages([getDefaultMessage(chat.id)]);
+    }
+    messagesLoadedRef.current = true;
   }, []);
 
   const handleCopyMessage = useCallback(
@@ -244,14 +378,14 @@ export default function Home() {
 
   const handleDeleteMessage = useCallback((messageId: string) => {
     // Show confirmation dialog
-    setDeleteConfirm({ open: true, messageId });
+    setDeleteConfirm({ open: true, messageId, type: "message" });
   }, []);
 
   const confirmDeleteMessage = useCallback(() => {
     const messageId = deleteConfirm.messageId;
     if (messageId) {
       setMessages((prev) => filterOutMessage(prev, messageId));
-      setDeleteConfirm({ open: false, messageId: null });
+      setDeleteConfirm({ open: false, messageId: null, type: "message" });
       addToast({
         type: "success",
         description: "Mensagem excluída",
@@ -265,7 +399,6 @@ export default function Home() {
   }, []);
 
   const handleRetryConnection = useCallback(() => {
-    // Retry WebSocket connection - to be implemented
     setConnectionStatus("reconnecting");
     addToast({
       type: "info",
@@ -280,16 +413,20 @@ export default function Home() {
     }, 2000);
   }, [addToast]);
 
-  if (!mounted) {
+  // Wait for both mount and localStorage to be loaded
+  if (!mounted || !isChatsLoaded) {
     return (
       <ErrorBoundary>
         <div
-          className="flex h-screen bg-gray-100 dark:bg-[#0B141A]"
+          className="flex h-screen bg-gray-100 dark:bg-[#0B141A] items-center justify-center"
           suppressHydrationWarning
-        />
+        >
+          <div className="text-gray-500 dark:text-gray-400">Carregando...</div>
+        </div>
       </ErrorBoundary>
     );
   }
+
   return (
     <ErrorBoundary>
       <div
@@ -298,12 +435,15 @@ export default function Home() {
       >
         {/* Chat List Sidebar */}
         <div
-          className={`${showChat ? "hidden md:block" : "block"} w-full md:w-96 flex-shrink-0`}
+          className={`${showChat ? "hidden md:block" : "block"} ${isSidebarOpen ? "md:w-96" : "md:w-0 md:opacity-0 md:overflow-hidden"} flex-shrink-0 transition-all duration-300 ease-in-out`}
         >
           <ChatList
-            chats={mockChats}
+            chats={chats}
             currentChatId={currentChat?.id || null}
             onSelectChat={handleSelectChat}
+            onNewChat={handleNewChat}
+            onDeleteChat={handleDeleteChat}
+            onRenameChat={handleRenameChat}
             searchQuery={searchQuery}
             onSearchChange={setSearchQuery}
             isLoading={isLoading}
@@ -326,6 +466,7 @@ export default function Home() {
             onDeleteMessage={handleDeleteMessage}
             connectionStatus={connectionStatus}
             onRetryConnection={handleRetryConnection}
+            onToggleSidebar={toggleSidebar}
           />
         </div>
 
@@ -341,13 +482,17 @@ export default function Home() {
         {/* Delete Confirmation Dialog */}
         <ConfirmDialog
           open={deleteConfirm.open}
-          title="Excluir Mensagem"
-          description="Tem certeza de que deseja excluir esta mensagem? Esta ação não pode ser desfeita."
+          title={deleteConfirm.type === "chat" ? "Excluir Chat" : "Excluir Mensagem"}
+          description={
+            deleteConfirm.type === "chat"
+              ? "Tem certeza de que deseja excluir este chat e todas as suas mensagens? Esta ação não pode ser desfeita."
+              : "Tem certeza de que deseja excluir esta mensagem? Esta ação não pode ser desfeita."
+          }
           confirmText="Excluir"
           cancelText="Cancelar"
           variant="destructive"
-          onConfirm={confirmDeleteMessage}
-          onCancel={() => setDeleteConfirm({ open: false, messageId: null })}
+          onConfirm={deleteConfirm.type === "chat" ? confirmDeleteChat : confirmDeleteMessage}
+          onCancel={() => setDeleteConfirm({ open: false, messageId: null, type: "message" })}
         />
       </div>
     </ErrorBoundary>

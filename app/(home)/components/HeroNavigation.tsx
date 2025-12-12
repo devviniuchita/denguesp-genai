@@ -14,6 +14,45 @@ export function HeroNavigation() {
   const { user, isAuthenticated, isLoading, logout } = useAuth();
   const shouldAnimate = useMotionReady(80);
 
+  const renderAuthButtons = () => {
+    if (isLoading) {
+      return (
+        <>
+          <Skeleton className="h-10 w-20" />
+          <Skeleton className="h-10 w-24" />
+        </>
+      );
+    }
+
+    if (isAuthenticated) {
+      return (
+        <>
+          <div className="hidden sm:flex items-center gap-2 text-sm text-muted-foreground">
+            <User className="h-4 w-4" />
+            <span>{user?.name}</span>
+          </div>
+          <Link href="/chat" prefetch={false}>
+            <Button variant="default">Chat</Button>
+          </Link>
+          <Button variant="ghost" size="icon" onClick={logout} title="Sair">
+            <LogOut className="h-4 w-4" />
+          </Button>
+        </>
+      );
+    }
+
+    return (
+      <>
+        <Link href="/auth/login" prefetch={true}>
+          <Button variant="ghost">Entrar</Button>
+        </Link>
+        <Link href="/auth/register" prefetch={true}>
+          <Button>Começar</Button>
+        </Link>
+      </>
+    );
+  };
+
   return (
     <LazyMotionProvider>
       <m.nav
@@ -33,6 +72,7 @@ export function HeroNavigation() {
               strokeLinecap="round"
               strokeLinejoin="round"
               className="h-5 w-5 text-primary"
+              aria-label="Logo DengueSP-Gen"
             >
               <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
               <path d="m9 12 2 2 4-4" />
@@ -58,35 +98,7 @@ export function HeroNavigation() {
 
         <div className="flex items-center gap-4">
           <ThemeToggle />
-
-          {isLoading ? (
-            <>
-              <Skeleton className="h-10 w-20" />
-              <Skeleton className="h-10 w-24" />
-            </>
-          ) : isAuthenticated ? (
-            <>
-              <div className="hidden sm:flex items-center gap-2 text-sm text-muted-foreground">
-                <User className="h-4 w-4" />
-                <span>{user?.name}</span>
-              </div>
-              <Link href="/chat" prefetch={false}>
-                <Button variant="default">Chat</Button>
-              </Link>
-              <Button variant="ghost" size="icon" onClick={logout} title="Sair">
-                <LogOut className="h-4 w-4" />
-              </Button>
-            </>
-          ) : (
-            <>
-              <Link href="/auth/login" prefetch={true}>
-                <Button variant="ghost">Entrar</Button>
-              </Link>
-              <Link href="/auth/register" prefetch={true}>
-                <Button>Começar</Button>
-              </Link>
-            </>
-          )}
+          {renderAuthButtons()}
         </div>
       </m.nav>
     </LazyMotionProvider>

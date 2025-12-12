@@ -110,12 +110,12 @@ export default function LandingPage() {
               © 2025 DengueSP-Gen. Todos os direitos reservados.
             </p>
             <div className='flex gap-6 text-sm text-muted-foreground'>
-              <a href='/privacidade' className='hover:text-foreground'>
+              <Link href='/privacidade' className='hover:text-foreground'>
                 Privacidade
-              </a>
-              <a href='/termos' className='hover:text-foreground'>
+              </Link>
+              <Link href='/termos' className='hover:text-foreground'>
                 Termos
-              </a>
+              </Link>
             </div>
           </div>
         </footer>

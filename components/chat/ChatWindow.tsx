@@ -22,6 +22,7 @@ interface ChatWindowProps {
   readonly onDeleteMessage?: (messageId: string) => void;
   readonly connectionStatus?: 'connected' | 'disconnected' | 'reconnecting' | 'error';
   readonly onRetryConnection?: () => void;
+  readonly onToggleSidebar?: () => void;
 }
 
 export function ChatWindow({
@@ -36,6 +37,7 @@ export function ChatWindow({
   onDeleteMessage,
   connectionStatus = 'connected',
   onRetryConnection,
+  onToggleSidebar,
 }: ChatWindowProps) {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
@@ -154,6 +156,7 @@ export function ChatWindow({
         onBack={onBack}
         connectionStatus={connectionStatus}
         onRetryConnection={onRetryConnection}
+        onToggleSidebar={onToggleSidebar}
       />
 
       {/* Messages Area - Using native scroll instead of ScrollArea */}

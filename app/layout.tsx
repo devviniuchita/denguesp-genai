@@ -31,6 +31,7 @@ export default function RootLayout({
       lang="pt-BR"
       suppressHydrationWarning
       className={inter.variable}
+      data-scroll-behavior="smooth"
     >
       <head>
         {/* Font optimization for LCP */}
