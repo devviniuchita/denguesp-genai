@@ -43,6 +43,6 @@ export const config = {
      * - public files (public assets)
      * - API routes (they handle auth themselves)
      */
-    String.raw`/((?!_next/static|_next/image|favicon.ico|.*\.(?:svg|png|jpg|jpeg|gif|webp)$|api).*)`,
+    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$|api).*)",
   ],
 };
