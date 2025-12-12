@@ -54,7 +54,7 @@ export default function RegisterPage() {
   } = form;
 
   return (
-    <AuthCard title='Crie sua conta' description='Comece a usar o DengueSP-Gen hoje mesmo'>
+    <AuthCard title='Crie sua conta' description='Comece a usar o DengueSP-GenAI hoje mesmo'>
       <div className='grid gap-6'>
         <form onSubmit={handleSubmit}>
           <div className='grid gap-4'>

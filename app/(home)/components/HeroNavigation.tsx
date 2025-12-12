@@ -8,6 +8,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { useMotionReady } from "@/hooks/use-motion-ready";
 import { m } from "framer-motion";
 import { LogOut, User } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 
 export function HeroNavigation() {
@@ -62,23 +63,16 @@ export function HeroNavigation() {
         className="container mx-auto flex items-center justify-between p-6"
       >
         <Link href="/" className="flex items-center gap-2">
-          <div className="h-8 w-8 rounded-lg bg-primary/20 flex items-center justify-center">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="h-5 w-5 text-primary"
-              aria-label="Logo DengueSP-Gen"
-            >
-              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-              <path d="m9 12 2 2 4-4" />
-            </svg>
+          <div className="relative h-8 w-8 flex items-center justify-center rounded-lg dark:rounded-full overflow-hidden dark:border-2 dark:border-primary/50 dark:bg-white/10 transition-all">
+            <Image
+              src="/assets/branding/denguegen-icon.png"
+              alt="Logo DengueSP-GenAI"
+              width={32}
+              height={32}
+              className="object-contain"
+            />
           </div>
-          <span className="text-xl font-bold tracking-tight">DengueSP-Gen</span>
+          <span className="text-xl font-bold tracking-tight">DengueSP-GenAI</span>
         </Link>
 
         <div className="hidden md:flex items-center gap-8">

@@ -113,7 +113,7 @@ export function LandingPageContent() {
               <h2 className='text-3xl md:text-4xl font-bold tracking-tight mb-6'>
                 Por que usar o{' '}
                 <span className='bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-600'>
-                  DengueSP-Gen
+                  DengueSP-GenAI
                 </span>
                 ?
               </h2>
@@ -163,10 +163,10 @@ export function LandingPageContent() {
               <div className='h-6 w-6 rounded bg-primary/20 flex items-center justify-center'>
                 <span className='text-xs font-bold text-primary'>D</span>
               </div>
-              <span className='font-semibold'>DengueSP-Gen</span>
+              <span className='font-semibold'>DengueSP-GenAI</span>
             </Link>
             <p className='text-sm text-muted-foreground text-center md:text-left'>
-              © 2025 DengueSP-Gen. Todos os direitos reservados.
+              © 2025 DengueSP-GenAI. Todos os direitos reservados.
             </p>
             <div className='flex gap-6 text-sm text-muted-foreground'>
               <Link href='/privacidade' className='hover:text-foreground transition-colors'>

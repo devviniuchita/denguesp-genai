@@ -5,11 +5,11 @@ import { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Política de Privacidade | DengueSP-Gen",
-  description: "Política de Privacidade e Proteção de Dados da plataforma DengueSP-Gen. Compreenda como seus dados são protegidos.",
+  title: "Política de Privacidade | DengueSP-GenAI",
+  description: "Política de Privacidade e Proteção de Dados da plataforma DengueSP-GenAI. Compreenda como seus dados são protegidos.",
   openGraph: {
-    title: "Política de Privacidade | DengueSP-Gen",
-    description: "Política de Privacidade e Proteção de Dados da plataforma DengueSP-Gen",
+    title: "Política de Privacidade | DengueSP-GenAI",
+    description: "Política de Privacidade e Proteção de Dados da plataforma DengueSP-GenAI",
     type: "website",
   },
 };
@@ -77,7 +77,7 @@ export default function PrivacidadePage() {
                 Política de Privacidade
               </h1>
               <p className="text-lg text-muted-foreground mb-4">
-                Conheça como protegemos e gerenciamos seus dados pessoais na plataforma DengueSP-Gen.
+                Conheça como protegemos e gerenciamos seus dados pessoais na plataforma DengueSP-GenAI.
               </p>
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <Clock className="h-4 w-4" />
@@ -199,10 +199,10 @@ export default function PrivacidadePage() {
               <div className='h-6 w-6 rounded bg-primary/20 flex items-center justify-center'>
                 <span className='text-xs font-bold text-primary'>D</span>
               </div>
-              <span className='font-semibold'>DengueSP-Gen</span>
+              <span className='font-semibold'>DengueSP-GenAI</span>
             </Link>
             <p className="text-sm text-muted-foreground">
-              © 2025 DengueSP-Gen. Todos os direitos reservados.
+              © 2025 DengueSP-GenAI. Todos os direitos reservados.
             </p>
             <div className="flex gap-6 text-sm text-muted-foreground">
               <Link href='/privacidade' className='hover:text-foreground transition-colors'>

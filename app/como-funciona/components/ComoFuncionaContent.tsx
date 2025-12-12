@@ -76,10 +76,10 @@ export function ComoFuncionaContent() {
             </Link>
           </motion.div>
           <motion.h1 variants={itemVariants} className="text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight mb-6 bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/60">
-            Entenda como o DengueSP-Gen funciona
+            Entenda como o DengueSP-GenAI funciona
           </motion.h1>
           <motion.p variants={itemVariants} className="text-xl text-muted-foreground leading-relaxed max-w-3xl">
-            O DengueSP-Gen é um assistente conversacional especializado em
+            O DengueSP-GenAI é um assistente conversacional especializado em
             dengue na cidade de São Paulo. Ele combina dados oficiais em tempo
             quase real com IA Generativa para responder, em linguagem simples,
             perguntas como:
@@ -123,11 +123,11 @@ export function ComoFuncionaContent() {
           <div className="bg-white/50 dark:bg-white/5 backdrop-blur-md border border-gray-200/50 dark:border-white/10 rounded-3xl p-8 md:p-10 shadow-xl shadow-primary/5">
             <motion.h2 variants={itemVariants} className="text-3xl font-bold mb-6 flex items-center gap-3">
               <Sparkles className="h-6 w-6 text-primary" />
-              Por que o DengueSP-Gen é diferente
+              Por que o DengueSP-GenAI é diferente
             </motion.h2>
             <motion.p variants={itemVariants} className="text-lg text-muted-foreground mb-8 leading-relaxed">
               Enquanto a maior parte das informações sobre dengue está espalhada
-              em boletins, PDFs e notícias, o DengueSP-Gen junta tudo isso em um
+              em boletins, PDFs e notícias, o DengueSP-GenAI junta tudo isso em um
               único ponto de contato inteligente:
             </motion.p>
 
@@ -189,7 +189,7 @@ export function ComoFuncionaContent() {
             Como funciona – passo a passo
           </motion.h2>
           <motion.p variants={itemVariants} className="text-center text-muted-foreground mb-10 max-w-2xl mx-auto">
-            Por trás de uma interface simples de chat, o DengueSP-Gen orquestra
+            Por trás de uma interface simples de chat, o DengueSP-GenAI orquestra
             um pipeline de dados oficiais, IA Generativa e guardrails de
             segurança para entregar respostas claras e responsáveis sobre
             dengue.
@@ -345,7 +345,7 @@ export function ComoFuncionaContent() {
               De onde vêm os dados
             </h2>
             <p className="text-muted-foreground mb-6">
-              Para entregar respostas confiáveis, o DengueSP-Gen se baseia em
+              Para entregar respostas confiáveis, o DengueSP-GenAI se baseia em
               três pilares:
             </p>
             <ul className="space-y-4">
@@ -393,7 +393,7 @@ export function ComoFuncionaContent() {
               Segurança e Responsabilidade
             </h2>
             <p className="text-blue-800 dark:text-blue-200 mb-6">
-              O DengueSP-Gen foi projetado para ser útil, mas também seguro. O
+              O DengueSP-GenAI foi projetado para ser útil, mas também seguro. O
               foco é informar e educar, nunca substituir profissionais.
             </p>
             <ul className="space-y-3">
@@ -459,7 +459,7 @@ export function ComoFuncionaContent() {
             </motion.h2>
             <motion.p variants={itemVariants} className="text-muted-foreground mb-6">
               Estamos começando pelo essencial. A partir dessa base, o
-              DengueSP-Gen pode crescer para:
+              DengueSP-GenAI pode crescer para:
             </motion.p>
             <motion.div variants={containerVariants} className="space-y-3">
               {[
@@ -494,7 +494,7 @@ export function ComoFuncionaContent() {
           <div className="absolute inset-0 bg-primary/5 blur-3xl rounded-full -z-10 transform scale-150"></div>
           <motion.h2 variants={itemVariants} className="text-3xl font-bold mb-4">Pronto para testar?</motion.h2>
           <motion.p variants={itemVariants} className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-            Experimente agora mesmo o DengueSP-Gen e tire suas dúvidas sobre a
+            Experimente agora mesmo o DengueSP-GenAI e tire suas dúvidas sobre a
             situação da dengue em São Paulo.
           </motion.p>
           <motion.div variants={itemVariants} className="flex justify-center" whileHover={{ scale: 1.05 }}>
@@ -511,10 +511,10 @@ export function ComoFuncionaContent() {
               <div className='h-6 w-6 rounded bg-primary/20 flex items-center justify-center'>
                 <span className='text-xs font-bold text-primary'>D</span>
               </div>
-              <span className='font-semibold'>DengueSP-Gen</span>
+              <span className='font-semibold'>DengueSP-GenAI</span>
             </Link>
             <p className="text-sm text-muted-foreground">
-              © 2025 DengueSP-Gen. Todos os direitos reservados.
+              © 2025 DengueSP-GenAI. Todos os direitos reservados.
             </p>
             <div className="flex gap-6 text-sm text-muted-foreground">
               <Link href='/privacidade' className='hover:text-foreground transition-colors'>

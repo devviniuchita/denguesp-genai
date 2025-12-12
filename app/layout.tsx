@@ -19,6 +19,16 @@ export const metadata: Metadata = {
   title: "AI Chat - WhatsApp Style Interface",
   description: "Modern chat interface for AI agent interaction",
   formatDetection: { telephone: false },
+  icons: {
+    icon: [
+      { url: "/assets/branding/favicon.ico" },
+      { url: "/assets/branding/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      { url: "/assets/branding/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+    ],
+    apple: [
+      { url: "/assets/branding/apple-touch-icon.png" },
+    ],
+  },
 };
 
 export default function RootLayout({

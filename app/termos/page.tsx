@@ -5,11 +5,11 @@ import { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Termos de Serviço | DengueSP-Gen",
-  description: "Termos e condições de uso da plataforma DengueSP-Gen. Leia nossas políticas e regulamentações.",
+  title: "Termos de Serviço | DengueSP-GenAI",
+  description: "Termos e condições de uso da plataforma DengueSP-GenAI. Leia nossas políticas e regulamentações.",
   openGraph: {
-    title: "Termos de Serviço | DengueSP-Gen",
-    description: "Termos e condições de uso da plataforma DengueSP-Gen",
+    title: "Termos de Serviço | DengueSP-GenAI",
+    description: "Termos e condições de uso da plataforma DengueSP-GenAI",
     type: "website",
   },
 };
@@ -18,12 +18,12 @@ const termsData = [
   {
     id: "uso",
     title: "Condições de Uso",
-    content: `Ao acessar e usar a plataforma DengueSP-Gen, você concorda em cumprir com estes Termos de Serviço. A plataforma é fornecida "no estado em que se encontra" para fins educacionais e informativos sobre dengue em São Paulo.`,
+    content: `Ao acessar e usar a plataforma DengueSP-GenAI, você concorda em cumprir com estes Termos de Serviço. A plataforma é fornecida "no estado em que se encontra" para fins educacionais e informativos sobre dengue em São Paulo.`,
   },
   {
     id: "propriedade",
     title: "Propriedade Intelectual",
-    content: `Todo o conteúdo, incluindo textos, gráficos, logos, imagens e software, é propriedade da DengueSP-Gen ou seus respectivos proprietários. Você concorda em não reproduzir, distribuir ou transmitir qualquer conteúdo sem permissão prévia.`,
+    content: `Todo o conteúdo, incluindo textos, gráficos, logos, imagens e software, é propriedade da DengueSP-GenAI ou seus respectivos proprietários. Você concorda em não reproduzir, distribuir ou transmitir qualquer conteúdo sem permissão prévia.`,
   },
   {
     id: "responsabilidades",
@@ -33,7 +33,7 @@ const termsData = [
   {
     id: "limitacoes",
     title: "Limitação de Responsabilidade",
-    content: `A DengueSP-Gen não será responsável por danos indiretos, incidentais, especiais ou consequentes resultantes do uso ou incapacidade de usar a plataforma. As informações fornecidas são apenas para referência educacional.`,
+    content: `A DengueSP-GenAI não será responsável por danos indiretos, incidentais, especiais ou consequentes resultantes do uso ou incapacidade de usar a plataforma. As informações fornecidas são apenas para referência educacional.`,
   },
   {
     id: "modificacoes",
@@ -73,7 +73,7 @@ export default function TermosPage() {
                 Termos de Serviço
               </h1>
               <p className="text-lg text-muted-foreground mb-4">
-                Leia e compreenda nossos termos e condições antes de usar a plataforma DengueSP-Gen.
+                Leia e compreenda nossos termos e condições antes de usar a plataforma DengueSP-GenAI.
               </p>
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <Clock className="h-4 w-4" />
@@ -176,10 +176,10 @@ export default function TermosPage() {
               <div className='h-6 w-6 rounded bg-primary/20 flex items-center justify-center'>
                 <span className='text-xs font-bold text-primary'>D</span>
               </div>
-              <span className='font-semibold'>DengueSP-Gen</span>
+              <span className='font-semibold'>DengueSP-GenAI</span>
             </Link>
             <p className="text-sm text-muted-foreground">
-              © 2025 DengueSP-Gen. Todos os direitos reservados.
+              © 2025 DengueSP-GenAI. Todos os direitos reservados.
             </p>
             <div className="flex gap-6 text-sm text-muted-foreground">
               <Link href='/privacidade' className='hover:text-foreground transition-colors'>

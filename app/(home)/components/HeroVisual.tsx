@@ -3,6 +3,7 @@
 import { LazyMotionProvider } from "@/components/animations/LazyMotionProvider";
 import { useMotionReady } from "@/hooks/use-motion-ready";
 import { m, type MotionProps } from "framer-motion";
+import NextImage from "next/image";
 
 const initialIfReady = (
   shouldAnimate: boolean,
@@ -53,8 +54,19 @@ export function HeroVisual() {
             <div className="h-3 w-3 rounded-full bg-red-500" />
             <div className="h-3 w-3 rounded-full bg-yellow-500" />
             <div className="h-3 w-3 rounded-full bg-green-500" />
-            <div className="ml-4 text-xs font-medium text-muted-foreground">
-              DengueSP-Gen AI
+            <div className="ml-4 flex items-center gap-2">
+              <div className="relative h-4 w-4 rounded-full overflow-hidden dark:ring-1 dark:ring-primary/50">
+                <NextImage
+                  src="/assets/branding/denguegen-icon.png"
+                  alt="Logo"
+                  width={16}
+                  height={16}
+                  className="object-contain"
+                />
+              </div>
+              <div className="text-xs font-medium text-muted-foreground">
+                DengueSP-GenAI
+              </div>
             </div>
         </div>
 

@@ -1,8 +1,8 @@
-# Guia de Teste - DengueSP-Gen Frontend
+# Guia de Teste - DengueSP-GenAI Frontend
 
 ## Visão Geral
 
-Este guia cobre os testes e medições de performance para o DengueSP-Gen Frontend, incluindo testes funcionais, testes de acessibilidade e medição de Core Web Vitals.
+Este guia cobre os testes e medições de performance para o DengueSP-GenAI Frontend, incluindo testes funcionais, testes de acessibilidade e medição de Core Web Vitals.
 
 ## Performance: Core Web Vitals
 
