@@ -1,10 +1,11 @@
 'use client';
 
+import { Button } from '@/components/ui/button';
 import { DotPattern } from '@/components/ui/dot-pattern';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import { Chat, Message } from '@/types/chat';
-import { motion } from 'framer-motion';
-import { useEffect, useRef } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { ArrowDown, ArrowUp } from 'lucide-react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { ChatHeader } from './ChatHeader';
 import { ChatInput } from './ChatInput';
 import { MessageBubble } from './MessageBubble';
@@ -37,11 +38,62 @@ export function ChatWindow({
   onRetryConnection,
 }: ChatWindowProps) {
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const [showScrollToTop, setShowScrollToTop] = useState(false);
+  const [showScrollToBottom, setShowScrollToBottom] = useState(false);
+  const [userHasScrolled, setUserHasScrolled] = useState(false);
 
-  // Auto-scroll to bottom when new messages arrive
-  useEffect(() => {
+  // Handle scroll position detection
+  const handleScroll = useCallback(() => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    const { scrollTop, scrollHeight, clientHeight } = container;
+    const distanceFromBottom = scrollHeight - scrollTop - clientHeight;
+
+    // Show scroll to top button when scrolled down more than 200px
+    setShowScrollToTop(scrollTop > 200);
+
+    // Show scroll to bottom when not at the bottom (with some tolerance)
+    setShowScrollToBottom(distanceFromBottom > 100);
+
+    // Track if user has manually scrolled
+    if (distanceFromBottom > 100) {
+      setUserHasScrolled(true);
+    } else {
+      setUserHasScrolled(false);
+    }
+  }, []);
+
+  // Scroll to top function
+  const scrollToTop = useCallback(() => {
+    scrollContainerRef.current?.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    });
+  }, []);
+
+  // Scroll to bottom function
+  const scrollToBottom = useCallback(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages, isTyping]);
+    setUserHasScrolled(false);
+  }, []);
+
+  // Auto-scroll to bottom when new messages arrive (only if user hasn't scrolled up)
+  useEffect(() => {
+    if (!userHasScrolled) {
+      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messages, isTyping, userHasScrolled]);
+
+  // Attach scroll event listener
+  useEffect(() => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    container.addEventListener('scroll', handleScroll, { passive: true });
+    return () => container.removeEventListener('scroll', handleScroll);
+  }, [handleScroll]);
 
   if (!chat) {
     return (
@@ -83,10 +135,10 @@ export function ChatWindow({
             </svg>
           </motion.div>
           <h2 className='text-2xl font-bold text-gray-800 dark:text-gray-100 mb-2'>
-            Select a chat
+            Selecione um chat
           </h2>
           <p className='text-gray-600 dark:text-gray-400'>
-            Choose a conversation to start messaging
+            Escolha uma conversa para começar
           </p>
         </motion.div>
       </div>
@@ -94,7 +146,7 @@ export function ChatWindow({
   }
 
   return (
-    <div className='flex flex-col h-screen bg-gradient-to-b from-gray-50 to-white dark:from-[#0B141A] dark:to-[#111B21] relative overflow-hidden'>
+    <div className='flex flex-col h-screen bg-gradient-to-b from-gray-50 to-white dark:from-[#0B141A] dark:to-[#111B21] relative'>
       <DotPattern className='opacity-20' />
       {/* Header */}
       <ChatHeader
@@ -104,8 +156,11 @@ export function ChatWindow({
         onRetryConnection={onRetryConnection}
       />
 
-      {/* Messages Area */}
-      <ScrollArea className='flex-1 px-4 py-6 premium-scrollbar relative z-10'>
+      {/* Messages Area - Using native scroll instead of ScrollArea */}
+      <div
+        ref={scrollContainerRef}
+        className='flex-1 overflow-y-auto px-4 py-6 premium-scrollbar relative z-10'
+      >
         <div className='max-w-4xl mx-auto'>
           {isLoading && (
             <div className='space-y-4'>
@@ -153,10 +208,10 @@ export function ChatWindow({
                 </svg>
               </motion.div>
               <h3 className='text-2xl font-bold text-gray-800 dark:text-gray-100 mb-2'>
-                Ready to chat
+                Pronto para conversar
               </h3>
               <p className='text-gray-600 dark:text-gray-400'>
-                Start a conversation with your AI assistant
+                Inicie uma conversa com o assistente de IA
               </p>
             </motion.div>
           )}
@@ -224,7 +279,50 @@ export function ChatWindow({
 
           <div ref={messagesEndRef} />
         </div>
-      </ScrollArea>
+      </div>
+
+      {/* Scroll Navigation Buttons */}
+      <AnimatePresence>
+        {showScrollToTop && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.8, y: 20 }}
+            transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+            className='absolute right-6 bottom-32 z-20'
+          >
+            <Button
+              variant='outline'
+              size='icon'
+              onClick={scrollToTop}
+              className='h-10 w-10 rounded-full bg-white/90 dark:bg-[#202C33]/90 backdrop-blur-md shadow-lg border border-gray-200/50 dark:border-gray-700/50 hover:bg-[#005cff]/10 hover:border-[#005cff]/50 transition-all'
+              aria-label='Ir ao início do chat'
+            >
+              <ArrowUp className='h-5 w-5 text-gray-600 dark:text-gray-300' />
+            </Button>
+          </motion.div>
+        )}
+
+        {showScrollToBottom && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8, y: -20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.8, y: -20 }}
+            transition={{ type: 'spring', stiffness: 300, damping: 25 }}
+            className='absolute right-6 bottom-20 z-20'
+          >
+            <Button
+              variant='outline'
+              size='icon'
+              onClick={scrollToBottom}
+              className='h-10 w-10 rounded-full bg-white/90 dark:bg-[#202C33]/90 backdrop-blur-md shadow-lg border border-gray-200/50 dark:border-gray-700/50 hover:bg-[#005cff]/10 hover:border-[#005cff]/50 transition-all'
+              aria-label='Ir ao final do chat'
+            >
+              <ArrowDown className='h-5 w-5 text-gray-600 dark:text-gray-300' />
+            </Button>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Input Area */}
       <ChatInput onSendMessage={onSendMessage} disabled={isLoading} />
