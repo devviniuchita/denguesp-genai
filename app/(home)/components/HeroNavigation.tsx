@@ -56,45 +56,47 @@ export function HeroNavigation() {
 
   return (
     <LazyMotionProvider>
-      <m.nav
+      <m.header
         initial={shouldAnimate ? { opacity: 0, y: -20 } : false}
         animate={shouldAnimate ? { opacity: 1, y: 0 } : {}}
         transition={shouldAnimate ? { duration: 0.5 } : undefined}
-        className="container mx-auto flex items-center justify-between px-6 py-3"
+        className="sticky top-0 z-50 w-full border-b border-transparent bg-background/80 backdrop-blur-md transition-all duration-300 dark:border-white/5"
       >
-        <Link href="/" className="flex items-center gap-2">
-          <div className="relative h-8 w-8 flex items-center justify-center rounded-lg dark:rounded-full overflow-hidden dark:border-2 dark:border-primary/50 dark:bg-white/10 transition-all">
-            <Image
-              src="/assets/branding/denguegen-icon.png"
-              alt="Logo DengueSP-GenAI"
-              width={32}
-              height={32}
-              className="object-contain"
-            />
+        <div className="container mx-auto flex items-center justify-between px-6 py-3">
+          <Link href="/" className="flex items-center gap-2">
+            <div className="relative h-8 w-8 flex items-center justify-center rounded-lg dark:rounded-full overflow-hidden dark:border-2 dark:border-primary/50 dark:bg-white/10 transition-all">
+              <Image
+                src="/assets/branding/denguegen-icon.png"
+                alt="Logo DengueSP-GenAI"
+                width={32}
+                height={32}
+                className="object-contain"
+              />
+            </div>
+            <span className="text-xl font-bold tracking-tight">DengueSP-GenAI</span>
+          </Link>
+
+          <div className="hidden md:flex items-center gap-8">
+            <Link
+              href="#sobre"
+              className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors"
+            >
+              Sobre
+            </Link>
+            <Link
+              href="/como-funciona"
+              className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors"
+            >
+              Como funciona
+            </Link>
           </div>
-          <span className="text-xl font-bold tracking-tight">DengueSP-GenAI</span>
-        </Link>
 
-        <div className="hidden md:flex items-center gap-8">
-          <Link
-            href="#sobre"
-            className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors"
-          >
-            Sobre
-          </Link>
-          <Link
-            href="/como-funciona"
-            className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors"
-          >
-            Como funciona
-          </Link>
+          <div className="flex items-center gap-4">
+            <ThemeToggle />
+            {renderAuthButtons()}
+          </div>
         </div>
-
-        <div className="flex items-center gap-4">
-          <ThemeToggle />
-          {renderAuthButtons()}
-        </div>
-      </m.nav>
+      </m.header>
     </LazyMotionProvider>
   );
 }
