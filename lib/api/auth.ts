@@ -87,3 +87,17 @@ export async function getSession() {
     return null;
   }
 }
+
+export async function forgotPassword(email: string): Promise<void> {
+  // Mock API call simulation
+  await new Promise((resolve) => setTimeout(resolve, 1500));
+  // In a real app: await fetch('/api/auth/forgot-password', { method: 'POST', body: JSON.stringify({ email }) });
+  console.log('Forgot password request for:', email);
+}
+
+export async function resetPassword(token: string, password: string): Promise<void> {
+  // Mock API call simulation
+  await new Promise((resolve) => setTimeout(resolve, 2000));
+  // In a real app: await fetch('/api/auth/reset-password', { method: 'POST', body: JSON.stringify({ token, password }) });
+  console.log('Reset password request with token:', token, 'and new password:', password);
+}
