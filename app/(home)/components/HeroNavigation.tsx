@@ -60,7 +60,7 @@ export function HeroNavigation() {
         initial={shouldAnimate ? { opacity: 0, y: -20 } : false}
         animate={shouldAnimate ? { opacity: 1, y: 0 } : {}}
         transition={shouldAnimate ? { duration: 0.5 } : undefined}
-        className="container mx-auto flex items-center justify-between p-6"
+        className="container mx-auto flex items-center justify-between px-6 py-3"
       >
         <Link href="/" className="flex items-center gap-2">
           <div className="relative h-8 w-8 flex items-center justify-center rounded-lg dark:rounded-full overflow-hidden dark:border-2 dark:border-primary/50 dark:bg-white/10 transition-all">

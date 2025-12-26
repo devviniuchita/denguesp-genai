@@ -82,12 +82,12 @@ export function LandingPageContent() {
 
       <main className='flex-1'>
         {/* Hero Section */}
-        <section className='container mx-auto px-6 py-12 lg:py-24 relative'>
+        <section className='container mx-auto px-6 pt-2 pb-12 lg:pt-0 lg:pb-20 relative'>
           {/* Hero Background Decorations */}
           <div className="absolute top-0 left-[10%] w-[40%] h-[60%] bg-primary/5 rounded-full blur-[100px] -z-10 dark:bg-primary/10" />
           <div className="absolute bottom-0 right-[5%] w-[30%] h-[40%] bg-blue-400/5 rounded-full blur-[80px] -z-10 dark:bg-blue-500/10" />
 
-          <div className='grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center'>
+          <div className='grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-start'>
             <HeroHeadline />
             <Suspense fallback={<HeroVisualSkeleton />}>
               <HeroVisual />

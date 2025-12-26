@@ -41,7 +41,7 @@ export function HeroVisual() {
           duration: 0.7,
           ease: "easeOut",
         })}
-        className="relative w-full max-w-[500px] aspect-square lg:aspect-[4/5] mx-auto"
+        className="relative w-full max-w-[400px] aspect-square lg:aspect-[4/5] mx-auto"
     >
       {/* Decorative elements */}
         <div className="absolute -top-20 -right-20 w-64 h-64 bg-primary/10 rounded-full blur-3xl" />
@@ -51,9 +51,51 @@ export function HeroVisual() {
         <div className="relative h-full w-full bg-background border rounded-2xl shadow-2xl overflow-hidden flex flex-col glass-panel">
         {/* Header */}
           <div className="p-4 border-b flex items-center gap-3 bg-muted/50">
-            <div className="h-3 w-3 rounded-full bg-red-500" />
-            <div className="h-3 w-3 rounded-full bg-yellow-500" />
-            <div className="h-3 w-3 rounded-full bg-green-500" />
+            {[1, 2, 3].map((i) => {
+              const colors = {
+                1: "bg-red-500",
+                2: "bg-yellow-500",
+                3: "bg-green-500"
+              };
+              return (
+                <m.div
+                  key={i}
+                  initial={initialIfReady(shouldAnimate, {
+                    opacity: 0,
+                    scale: 0.3,
+                    y: 5
+                  })}
+                  animate={animateIfReady(shouldAnimate, {
+                    opacity: 1,
+                    scale: 1,
+                    y: [0, -3, 0],
+                    rotate: [0, 8, -8, 0]
+                  })}
+                  transition={transitionIfReady(shouldAnimate, {
+                    duration: 0.4,
+                    delay: 0.5 + (i * 0.15),
+                    y: {
+                      duration: 1.8,
+                      repeat: Infinity,
+                      repeatType: "reverse",
+                      ease: "easeInOut",
+                      delay: i * 0.25
+                    },
+                    rotate: {
+                      duration: 1.3,
+                      repeat: Infinity,
+                      repeatType: "reverse",
+                      ease: "easeInOut",
+                      delay: i * 0.15
+                    }
+                  })}
+                  className={`h-3 w-3 rounded-full ${colors[i as keyof typeof colors]}`}
+                  style={{
+                    animationDelay: `${i * 0.25}s`
+                  }}
+                />
+              );
+            })}
             <div className="ml-4 flex items-center gap-2">
               <div className="relative h-4 w-4 rounded-full overflow-hidden dark:ring-1 dark:ring-primary/50">
                 <NextImage
@@ -64,9 +106,32 @@ export function HeroVisual() {
                   className="object-contain"
                 />
               </div>
-              <div className="text-xs font-medium text-muted-foreground">
+              <m.div
+                initial={initialIfReady(shouldAnimate, { opacity: 0, x: -10 })}
+                animate={animateIfReady(shouldAnimate, {
+                  opacity: 1,
+                  x: 0,
+                  textShadow: [
+                    "0 0 0px rgba(0,92,255,0)",
+                    "0 0 10px rgba(0,92,255,0.5)",
+                    "0 0 0px rgba(0,92,255,0)"
+                  ]
+                })}
+                transition={transitionIfReady(shouldAnimate, {
+                  duration: 0.5,
+                  delay: 1.5,
+                  textShadow: {
+                    duration: 2,
+                    repeat: Infinity,
+                    repeatType: "reverse",
+                    ease: "easeInOut",
+                    delay: 2
+                  }
+                })}
+                className="text-xs font-medium text-muted-foreground"
+              >
                 DengueSP-GenAI
-              </div>
+              </m.div>
             </div>
         </div>
 

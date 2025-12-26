@@ -87,23 +87,55 @@ export function HeroHeadline() {
           })}
           className="flex items-center gap-4 text-sm text-muted-foreground mt-4"
         >
-          <div className="flex -space-x-2">
-            {[1, 2, 3].map((i) => {
-              const colors = {
-                1: "bg-red-500",
-                2: "bg-yellow-500",
-                3: "bg-green-500"
-              };
-              return (
-                <div
-                  key={i}
-                  className={`h-8 w-8 rounded-full flex items-center justify-center text-[10px] font-bold text-white ${colors[i as keyof typeof colors]}`}
-                >
-                  {String.fromCodePoint(64 + i)}
-                </div>
-              );
-            })}
-          </div>
+            <div className="flex -space-x-2">
+              {[1, 2, 3].map((i) => {
+                const colors = {
+                  1: "bg-red-500",
+                  2: "bg-yellow-500",
+                  3: "bg-green-500"
+                };
+                return (
+                  <m.div
+                    key={i}
+                    initial={initialIfReady(shouldAnimate, {
+                      opacity: 0,
+                      scale: 0.5,
+                      y: 10
+                    })}
+                    animate={animateIfReady(shouldAnimate, {
+                      opacity: 1,
+                      scale: 1,
+                      y: [0, -8, 0],
+                      rotate: [0, 5, -5, 0]
+                    })}
+                    transition={transitionIfReady(shouldAnimate, {
+                      duration: 0.6,
+                      delay: 0.8 + (i * 0.2),
+                      y: {
+                        duration: 2,
+                        repeat: Infinity,
+                        repeatType: "reverse",
+                        ease: "easeInOut",
+                        delay: i * 0.3
+                      },
+                      rotate: {
+                        duration: 1.5,
+                        repeat: Infinity,
+                        repeatType: "reverse",
+                        ease: "easeInOut",
+                        delay: i * 0.2
+                      }
+                    })}
+                    className={`h-8 w-8 rounded-full flex items-center justify-center text-[10px] font-bold text-white ${colors[i as keyof typeof colors]}`}
+                    style={{
+                      animationDelay: `${i * 0.3}s`
+                    }}
+                  >
+                    {String.fromCodePoint(64 + i)}
+                  </m.div>
+                );
+              })}
+            </div>
           <p>Junte-se a milhares de cidadãos informados</p>
         </m.div>
       </div>
